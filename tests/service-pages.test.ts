@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { digitalServices } from "@/content/digital-services";
+import { productCategories } from "@/content/products";
 import { faqs } from "@/content/faqs";
 import { services } from "@/content/services";
 import { isPublishable } from "@/lib/publishing";
@@ -11,7 +11,7 @@ import type { Faq, Service } from "@/types/content";
  * no duplicate titles or descriptions competing in search.
  */
 const serviceLines: readonly Service[] = services;
-const allServices: readonly Service[] = [...services, ...digitalServices];
+const allServices: readonly Service[] = services;
 const allFaqs: readonly Faq[] = faqs;
 
 const words = (text: string) => text.trim().split(/\s+/).length;
@@ -27,7 +27,7 @@ describe("service page content", () => {
   });
 
   it("every page (live or draft) has content of a useful length", () => {
-    expect(withPage.length).toBeGreaterThanOrEqual(10);
+    expect(withPage.length).toBe(services.length);
     for (const service of withPage) {
       const total = (service.page?.intro ?? []).reduce((sum, p) => sum + words(p), 0);
       expect(total, `${service.slug}: ${total} words`).toBeGreaterThanOrEqual(60);
@@ -74,27 +74,18 @@ describe("service page content", () => {
     expect(new Set(descriptions).size).toBe(descriptions.length);
   });
 
-  it("a digital page is published only on explicit approval", () => {
-    // CP p.23 only lists the digital services, so their page copy cannot rest on the Company
-    // Profile: publishing one needs a client-confirmed or owner-approved source.
-    for (const service of digitalServices) {
-      if ("page" in service && isPublishable(service.page)) {
-        expect(["client-confirmed", "owner-approved"], service.slug).toContain(
-          service.page.source.kind,
-        );
-      }
+  it("every event service page has a licensed hero photo", () => {
+    for (const service of services) {
+      expect(service.heroImage?.kind, service.slug).toBe("stock-photo");
+      expect(service.heroImage?.alt.length ?? 0, service.slug).toBeGreaterThan(10);
     }
   });
 
-  it("every digital page has deliverables, its own steps, platforms and a stock-licensed photo", () => {
-    for (const service of digitalServices) {
-      const { page } = service;
-      expect(page.deliverables.length, service.slug).toBeGreaterThanOrEqual(4);
-      expect(page.steps.length, service.slug).toBeGreaterThanOrEqual(3);
-      expect(page.platforms.length, service.slug).toBeGreaterThanOrEqual(3);
-      expect(page.photo.kind, service.slug).toBe("stock-photo");
-      expect(page.photo.source.kind, service.slug).toBe("stock-photo");
-      expect(page.photo.alt.length, service.slug).toBeGreaterThan(10);
+  it("every product category is named in the Company Profile and has products", () => {
+    for (const category of productCategories) {
+      expect(category.source.kind, category.id).toBe("company-profile");
+      expect(category.items.length, category.id).toBeGreaterThanOrEqual(3);
+      expect(category.image.kind, category.id).toBe("stock-photo");
     }
   });
 });

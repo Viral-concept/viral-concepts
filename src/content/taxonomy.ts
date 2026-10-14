@@ -8,5 +8,4 @@ export const projectCategoryLabels: Record<ProjectCategory, string> = {
   production: "Production & Fabrication",
   "festive-decor": "Festive & Décor",
   advertising: "Advertising",
-  digital: "Digital",
 };

@@ -19,8 +19,7 @@ export function getSitemapPaths(): string[] {
     ...(isPageVisible("about") ? [routes.about] : []),
     routes.services,
     ...getServicePages("services").map(serviceRoute),
-    routes.digitalSolutions,
-    ...getServicePages("digital-solutions").map(serviceRoute),
+    routes.products,
     ...(hasProjectsPage()
       ? [routes.projects, ...getProjects().map((project) => projectRoute(project.slug))]
       : []),

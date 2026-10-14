@@ -1,27 +1,15 @@
 import type { Governed, ImageAsset } from "@/types/content";
 
-import { media } from "./media";
-import { companyProfile } from "./sources";
+import { eventPhotos } from "./event-photos";
+import { companyProfile, ownerApproved } from "./sources";
 
 /**
- * Homepage copy. Every statement restates the Company Profile (CP) on the cited pages; no
- * figures, clients or outcomes are added. Wording still needs client sign-off before launch
- * (checklist #26) — the facts behind it are already confirmed by the CP.
+ * Homepage copy for the events-first design. Facts restate the Company Profile (CP) on the cited
+ * pages; no figures, clients or outcomes are added. Words wrapped in *asterisks* render as the
+ * serif accent (see components/ui/Accent). Positioning lines were approved by the website
+ * owner after the client's design review; wording still goes to the client with the rest of
+ * the copy (checklist #26).
  */
-
-export interface ProofPoint {
-  readonly id: string;
-  readonly label: string;
-}
-
-export interface FeaturedOffering extends Governed {
-  readonly id: string;
-  readonly title: string;
-  readonly summary: string;
-  /** Parent service page this card links to. */
-  readonly serviceSlug: string;
-  readonly image?: ImageAsset;
-}
 
 export interface Reason extends Governed {
   readonly id: string;
@@ -29,159 +17,211 @@ export interface Reason extends Governed {
   readonly body: string;
 }
 
+export interface HeroScene {
+  readonly id: string;
+  /** What kind of event the scene stands for (shown in the hero's scene index). */
+  readonly label: string;
+  readonly image: ImageAsset;
+}
+
+export interface ShowStep {
+  readonly id: string;
+  readonly title: string;
+  readonly body: string;
+}
+
+export interface ShowAct {
+  readonly id: string;
+  readonly label: string;
+  readonly title: string;
+  readonly image: ImageAsset;
+  readonly steps: readonly ShowStep[];
+}
+
+/** One run of the manifesto: words, or a small inline photograph between them. */
+export type ManifestoPart = string | { readonly image: ImageAsset };
+
+const POSITIONING = ownerApproved("2026-10-07", "Events-first positioning (client design review)");
+
 export const homeContent = {
   hero: {
-    eyebrow: "Events · Branding · Production · Advertising · Digital",
+    /** CP p.3 (production house, 2014). */
+    eyebrow: "Events & branding production house · Dubai · Since 2014",
     /**
-     * Headline lines. "Built to spread" is the logo tagline (CP p.1); the two lines before it
-     * name the two divisions (events, CP p.6; digital, CP p.23). Wording: checklist #26.
+     * "A One-Stop Shop for all your Events & Branding needs … under one roof" (CP p.3). The
+     * accented word is set in the serif.
      */
-    headline: ["Live experiences.", "Digital momentum.", "Built to spread."],
-    lead: "Events, exhibitions and branding — designed, printed and fabricated in our own Dubai production house — and the websites, apps and digital marketing that carry them further. Across the UAE, KSA and Qatar.",
-    /** Ticker under the hero: service lines and specialities named in the Company Profile. */
-    ticker: [
-      "Event production",
-      "Exhibition stands",
-      "Stages & AV",
-      "Large format printing",
-      "Flags & banners",
-      "Signage",
-      "Festive & mall décor",
-      "Event rentals",
-      "Mall activations",
-      "Websites & apps",
-      "SEO & social media",
-    ],
-    /** The two divisions, each listing services from the Company Profile (CP p.6, p.23). */
-    divisions: {
-      events: {
-        label: "Events & Production",
-        summary: "We create experiences, not just events.",
-        items: [
-          "Event production",
-          "Exhibitions",
-          "Rentals & entertainment",
-          "Festive décor",
-          "Branding & printing",
+    headline: ["Events &", "*branding,*", "under one roof."],
+    /** CP p.3, p.5–6 (service lines), p.16 (production house), p.35 (reach). */
+    lead: "Corporate events, conferences, exhibitions and festive décor — and the flags, banners, signage and print that brand them. Designed, printed and built in our own Dubai production house, delivered across the UAE, KSA and Qatar.",
+    /** The scenes the hero cycles through, one per kind of event. Photos: licensed stock. */
+    scenes: [
+      { id: "live", label: "Live shows & celebrations", image: eventPhotos.stageConfetti },
+      { id: "conferences", label: "Conferences & forums", image: eventPhotos.conferenceAuditorium },
+      { id: "corporate", label: "Corporate & gala nights", image: eventPhotos.banquetStage },
+      { id: "exhibitions", label: "Exhibitions & stands", image: eventPhotos.exhibitionAerial },
+      { id: "branding", label: "Flags, signage & print", image: eventPhotos.flagsSky },
+    ] satisfies readonly HeroScene[],
+    /** CP p.3, p.16, p.35. */
+    credits: ["In-house design, print & fabrication", "UAE · KSA · Qatar"],
+    source: POSITIONING,
+  },
+
+  /** The opening statement, read as you scroll (CP p.3, p.16). */
+  manifesto: {
+    eyebrow: "Who we are",
+    parts: [
+      "Since *2014* we have turned briefs into",
+      { image: eventPhotos.galaHall },
+      "events people *remember* and brands people notice — conferences, exhibitions, flags, signage",
+      { image: eventPhotos.ramadanLanterns },
+      "and festive décor, designed, printed and built in our own",
+      { image: eventPhotos.welding },
+      "Dubai production house.",
+    ] satisfies readonly ManifestoPart[],
+    /** CP p.3. */
+    body: "Viral Concepts began as Viral Concepts Advertising LLC in 2014. Today we are a one-stop shop for events and branding in the Middle East — your event partner as well as your branding partner, with everything you need under one roof.",
+  },
+
+  /** The two ways into the business (CP p.3: "not only your branding partner but your Event partner"). */
+  doors: {
+    eyebrow: "How can we help?",
+    title: "Two ways in. *One team* behind both.",
+    events: {
+      eyebrow: "Events & exhibitions",
+      title: "Plan an *event*",
+      body: "Corporate events, conferences, exhibition stands, activations and festive décor — concept, build, equipment and people, delivered as one project.",
+    },
+    print: {
+      eyebrow: "Branding & print",
+      title: "Order *branding*",
+      body: "Flags, banners, backdrops, signage, large format, fabric, vehicle branding, print and gifts — produced in our own Dubai workshop.",
+    },
+  },
+
+  productsPreview: {
+    eyebrow: "Branding & print",
+    title: "Printed, fabricated, *installed.*",
+    intro:
+      "No matter how large or small the job, we transform your key messages into visuals that speak to your audience.",
+  },
+
+  experiences: {
+    eyebrow: "What we create",
+    title: "Six kinds of *experience.* One production house.",
+    intro:
+      "Pick the occasion — we bring the concept, the build, the equipment and the people to run it.",
+  },
+
+  /** "Our Process to Success" (CP p.34), told as a show in five acts. */
+  runOfShow: {
+    eyebrow: "How a show comes together",
+    title: "From first coffee to *final applause.*",
+    intro:
+      "The nine steps we follow on every brief, large or small — with one team accountable from start to finish.",
+    acts: [
+      {
+        id: "imagine",
+        label: "Act I",
+        title: "Imagine",
+        image: eventPhotos.planningTable,
+        steps: [
+          {
+            id: "coffee",
+            title: "Coffee",
+            body: "We talk through your brief, in person or online.",
+          },
+          {
+            id: "analysis",
+            title: "Analysis",
+            body: "We look at the scope, the audience and your goals.",
+          },
+          {
+            id: "design",
+            title: "Design",
+            body: "We shape the concept, the visuals and the plan.",
+          },
         ],
       },
-      digital: {
-        label: "Digital Solutions",
-        summary: "Websites, apps and marketing that keep the momentum going.",
-        items: ["Websites", "Applications", "SEO", "Social media"],
+      {
+        id: "agree",
+        label: "Act II",
+        title: "Agree",
+        image: eventPhotos.drawingsReview,
+        steps: [
+          {
+            id: "proposal",
+            title: "Proposal",
+            body: "You receive a clear scope, design and budget to review.",
+          },
+          {
+            id: "approval",
+            title: "Approval",
+            body: "You sign off, and the production schedule is locked.",
+          },
+        ],
       },
-    },
-    /** CP p.3 (2014), p.16 (in-house facility), p.35 (reach). */
-    proofPoints: [
-      { id: "since", label: "Since 2014" },
-      { id: "in-house", label: "In-house print & fabrication" },
-      { id: "reach", label: "UAE · KSA · Qatar" },
-    ],
-    image: media.barrierBrandingMall,
-    secondaryImages: [media.exhibitionStandIlluminated, media.showroomFestiveLighting],
+      {
+        id: "build",
+        label: "Act III",
+        title: "Build",
+        image: eventPhotos.welding,
+        steps: [
+          {
+            id: "production",
+            title: "Production",
+            body: "Printing and fabrication in our own Dubai production house.",
+          },
+        ],
+      },
+      {
+        id: "showtime",
+        label: "Act IV",
+        title: "Showtime",
+        image: eventPhotos.soundDesk,
+        steps: [
+          {
+            id: "execution",
+            title: "Execution",
+            body: "Our team installs and runs the setup on site.",
+          },
+          {
+            id: "delivery",
+            title: "Delivery",
+            body: "Quality execution and timely delivery, ready for your guests.",
+          },
+        ],
+      },
+      {
+        id: "encore",
+        label: "Encore",
+        title: "After the show",
+        image: eventPhotos.applause,
+        steps: [
+          {
+            id: "post-sale-service",
+            title: "Post-Sale Service",
+            body: "We stay in touch after the event, with follow-up and support.",
+          },
+        ],
+      },
+    ] satisfies readonly ShowAct[],
   },
 
-  /** The events reel (featured offerings). Positioning line: checklist #26. */
-  reel: {
-    eyebrow: "Events & production",
-    title: "We create experiences, not just events",
-    intro:
-      "From exhibition stands and stages to flags, signage and festive décor — designed, printed and fabricated in our Dubai production house.",
+  /** The in-house facility (CP p.16) and what it makes (CP p.3, p.7–17). */
+  productionHouse: {
+    eyebrow: "The production house",
+    title: "Made in *our own* Dubai workshop.",
+    body: "Our own large format printing and fabrication facility, backed by partner tie-ups, means quality products at competitive costs — and no hand-offs between the people who design your event and the people who build it.",
+    verbs: ["Design", "Print", "Fabricate", "Install", "Run"],
+    images: [eventPhotos.fabricPrinter, eventPhotos.cncRouter, eventPhotos.ledInstall],
+    source: companyProfile(3, 16),
   },
 
+  /** Kept for /about: the approach line under the Riyadh skyline (CP p.2). */
   whoWeAre: {
-    eyebrow: "Who we are",
-    title: "Your events and branding partner, under one roof",
-    /** CP p.3. */
-    paragraphs: [
-      "Viral Concepts began as Viral Concepts Advertising LLC in 2014. Today we are a one-stop shop for events and branding in the Middle East, with a production house in Dubai for design, print, branding, fabrication and décor.",
-      "From textile and flag printing, banners and backdrops to signage, fabrication, AV rentals and event décor, we provide expert solutions and operational support for our clients’ events — all under one roof.",
-    ],
-    /** CP p.2: the approach line under the Riyadh skyline. */
     approach: ["Strategy", "Creative", "Innovation", "Production", "Reach"],
   },
-
-  featuredOfferings: [
-    {
-      id: "exhibition-stands",
-      title: "Exhibition stands",
-      summary:
-        "Designer, shell scheme, double-decker and portable stalls, designed and built in-house.",
-      serviceSlug: "exhibitions",
-      image: media.exhibitionStallDesigner,
-      status: "live",
-      verified: true,
-      source: companyProfile(26),
-    },
-    {
-      id: "barrier-branding",
-      title: "Event & barrier branding",
-      summary: "Barrier covers, fence branding and event brandings for races, venues and malls.",
-      serviceSlug: "branding-printing",
-      image: media.barrierBrandingMarathon,
-      status: "live",
-      verified: true,
-      source: companyProfile(8, 9, 30),
-    },
-    {
-      id: "stages-av",
-      title: "Stages, trussing & AV",
-      summary: "Stage design, trussing, audio visual equipment and 3D mapping and projections.",
-      serviceSlug: "event-production-fabrication",
-      image: media.avEquipmentSetup,
-      status: "live",
-      verified: true,
-      source: companyProfile(17),
-    },
-    {
-      id: "large-format",
-      title: "Large format printing",
-      summary:
-        "Banners, backdrops, wall and floor graphics and billboards from our own print setup.",
-      serviceSlug: "branding-printing",
-      status: "live",
-      verified: true,
-      source: companyProfile(7, 9),
-    },
-    {
-      id: "flags",
-      title: "Flags",
-      summary: "Blade, teardrop, L-shape, sail, wall-mounted, hoisting and festive flags.",
-      serviceSlug: "branding-printing",
-      status: "live",
-      verified: true,
-      source: companyProfile(11),
-    },
-    {
-      id: "signage",
-      title: "Signage",
-      summary: "3D, acrylic, backlit and directional signage.",
-      serviceSlug: "branding-printing",
-      status: "live",
-      verified: true,
-      source: companyProfile(15),
-    },
-    {
-      id: "festive-decor",
-      title: "Festive & mall décor",
-      summary: "National Day, Ramadan, Eid, Diwali, Christmas, New Year and theme-based décor.",
-      serviceSlug: "festive-mall-decor",
-      image: media.showroomFestiveLighting,
-      status: "live",
-      verified: true,
-      source: companyProfile(21, 24),
-    },
-    {
-      id: "event-rentals",
-      title: "Event rentals",
-      summary: "Tents, canopies, stages, furniture, barriers, inflatables, coolers and heaters.",
-      serviceSlug: "event-rentals-entertainment",
-      image: media.kidsOutdoorCinema,
-      status: "live",
-      verified: true,
-      source: companyProfile(19, 20),
-    },
-  ] satisfies readonly FeaturedOffering[],
 
   reasons: [
     {
@@ -224,17 +264,11 @@ export const homeContent = {
     intro: "Nine steps, from the first coffee to post-sale service.",
   },
 
-  digital: {
-    eyebrow: "Digital Solutions",
-    title: "Take your brand beyond the physical world",
-    /** CP p.23. */
-    intro:
-      "We offer complete digital marketing solutions for clients across the Gulf, including enterprise web solutions and mobility solutions.",
-  },
-
   finalCta: {
     /** CP p.4: "Planning an Event? Or … participating in an Exhibition? We will roll it out for you!" */
     title: "Planning an event or taking part in an exhibition?",
     lead: "We’ll roll it out for you.",
+    picker: "What are you planning?",
+    image: eventPhotos.emptyStage,
   },
 } as const;

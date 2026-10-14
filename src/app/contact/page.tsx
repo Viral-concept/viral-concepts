@@ -11,6 +11,7 @@ import { Section } from "@/components/ui/Section";
 import { publicEnv } from "@/config/env.public";
 import { getLeadFormConfig } from "@/config/env.server";
 import { contactContent } from "@/content/contact";
+import { eventPhotos } from "@/content/event-photos";
 import { whatsappHref } from "@/lib/contact-actions";
 import { getContactChannels, isPageVisible } from "@/lib/content";
 import { TURNSTILE_ACTION } from "@/lib/leads/turnstile";
@@ -111,6 +112,7 @@ export default function ContactPage() {
         eyebrow={contactContent.eyebrow}
         title={contactContent.title}
         lead={contactContent.lead}
+        image={eventPhotos.emptyStage}
         actions={
           channels.some((channel) => channel.href) ? (
             <ul className="flex flex-wrap gap-3" aria-label="Quick contact">
@@ -162,7 +164,7 @@ export default function ContactPage() {
               data-tone="dark"
               className="relative isolate flex flex-col gap-6 overflow-hidden rounded-media bg-night p-8 text-white"
             >
-              <Aurora tone="digital" />
+              <Aurora tone="events" />
               <h2 id="contact-channels-title" className="text-h3 text-white">
                 {contactContent.channelsTitle}
               </h2>

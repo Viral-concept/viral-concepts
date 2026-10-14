@@ -1,9 +1,9 @@
 import type { Service } from "@/types/content";
 
-import { media } from "../media";
+import { eventPhotos } from "../event-photos";
 import { companyProfile } from "../sources";
 
-/** Page copy restates CP p.7, 8, 9, 10, 11, 12, 13, 14, 15. Hero photo (if any) is an interim draft. */
+/** Page copy restates CP p.7, 8, 9, 10, 11, 12, 13, 14, 15. Hero photo: licensed stock that sets the scene (content/event-photos.ts). */
 export const brandingPrinting = {
   slug: "branding-printing",
   vertical: "services",
@@ -102,7 +102,7 @@ export const brandingPrinting = {
   status: "live",
   verified: true,
   source: companyProfile(5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 33),
-  heroImage: media.barrierBrandingMall,
+  heroImage: eventPhotos.fabricPrinter,
   page: {
     status: "live",
     verified: true,

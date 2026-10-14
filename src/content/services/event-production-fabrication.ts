@@ -1,9 +1,9 @@
 import type { Service } from "@/types/content";
 
-import { media } from "../media";
+import { eventPhotos } from "../event-photos";
 import { companyProfile } from "../sources";
 
-/** Page copy restates CP p.5, 16, 17, 25. Hero photo (if any) is an interim draft. */
+/** Page copy restates CP p.5, 16, 17, 25. Hero photo: licensed stock that sets the scene (content/event-photos.ts). */
 export const eventProductionFabrication = {
   slug: "event-production-fabrication",
   vertical: "services",
@@ -49,7 +49,7 @@ export const eventProductionFabrication = {
   status: "live",
   verified: true,
   source: companyProfile(5, 16, 17, 25),
-  heroImage: media.avEquipmentSetup,
+  heroImage: eventPhotos.ledStage,
   page: {
     status: "live",
     verified: true,

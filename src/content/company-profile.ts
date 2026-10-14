@@ -33,7 +33,7 @@ export const companyProfileContent = {
     { title: "Branding & printing, flags, signage and vehicle branding", pages: "7–15, 33" },
     { title: "Event production, rentals and entertainment", pages: "16–20" },
     { title: "Festive events & décor", pages: "21, 24" },
-    { title: "Advertising & PR and digital marketing", pages: "22–23" },
+    { title: "Advertising & PR", pages: "22" },
     { title: "Events & exhibitions", pages: "25–26" },
     { title: "Selected work", pages: "27–32" },
     { title: "Our process to success", pages: "34" },

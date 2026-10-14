@@ -30,10 +30,13 @@
   --color-teal-200: #81bec5;
   --color-yellow-400: #ffc714;
   --color-navy: #151340;
-  /* Derived (not on the colour sheet): the deep teal-black of premium dark sections. */
+  /* Derived (not on the colour sheet): the deep teal-black "stage" of dark sections. */
   --color-night: #0b1d23;
   --color-night-soft: #11292f;
-  --color-surface: #f4f8f9;
+  /* Derived: the darkest stage tone, for hero vignettes and image overlays. */
+  --color-stage: #050e11;
+  /* Derived: warm ivory "programme paper" for light sections (ink 12.9:1, muted 6.1:1). */
+  --color-surface: #f4f0e8;
   --color-muted: #4a5f66;
   --color-white: #ffffff;
   --color-transparent: transparent;
@@ -47,37 +50,50 @@
   --color-danger: #b42318;
 
   /* ----------------------------------------------------- Type (fluid scale) */
+  /*
+   * Poster headlines: Archivo, condensed and uppercase (see the type rules in @layer
+   * components), with Instrument Serif italic accent words (<em>). Sizes are fluid between
+   * 360px and 1440px viewports.
+   */
   /* Cinematic hero headline (homepage only). */
-  --text-hero: clamp(2.6rem, 1.3rem + 5.2vw, 5.5rem);
-  --text-hero--line-height: 0.98;
-  --text-hero--letter-spacing: -0.035em;
-  --text-hero--font-weight: 700;
-  /* Sizes interpolate between 360px and 1280px viewports. */
-  --text-display: clamp(2.75rem, 1.85rem + 4vw, 4.5rem);
-  --text-display--line-height: 1.04;
-  --text-display--letter-spacing: -0.02em;
-  --text-display--font-weight: 700;
-  --text-h1: clamp(2.25rem, 1.7rem + 2.45vw, 3.5rem);
-  --text-h1--line-height: 1.08;
-  --text-h1--letter-spacing: -0.015em;
-  --text-h1--font-weight: 700;
-  --text-h2: clamp(1.75rem, 1.4rem + 1.55vw, 2.5rem);
-  --text-h2--line-height: 1.15;
-  --text-h2--letter-spacing: -0.01em;
+  --text-hero: clamp(2.75rem, min(0.25rem + 9.4vw, 13.5svh), 9.75rem);
+  --text-hero--line-height: 0.86;
+  --text-hero--letter-spacing: -0.012em;
+  --text-hero--font-weight: 800;
+  /* Inner-page heroes and closing statements. */
+  --text-display: clamp(2.5rem, 0.9rem + 6.2vw, 7rem);
+  --text-display--line-height: 0.9;
+  --text-display--letter-spacing: -0.01em;
+  --text-display--font-weight: 800;
+  /* Big section statements. */
+  --text-h1: clamp(2.25rem, 1rem + 4.4vw, 5.25rem);
+  --text-h1--line-height: 0.92;
+  --text-h1--letter-spacing: -0.008em;
+  --text-h1--font-weight: 800;
+  /* Section titles (sentence case). */
+  --text-h2: clamp(1.875rem, 1.25rem + 2.3vw, 3.375rem);
+  --text-h2--line-height: 1.02;
+  --text-h2--letter-spacing: -0.028em;
   --text-h2--font-weight: 700;
-  --text-h3: clamp(1.25rem, 1.12rem + 0.55vw, 1.625rem);
-  --text-h3--line-height: 1.25;
-  --text-h3--font-weight: 600;
+  --text-h3: clamp(1.3rem, 1.12rem + 0.7vw, 1.75rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.015em;
+  --text-h3--font-weight: 700;
   --text-lead: clamp(1.0625rem, 1rem + 0.3vw, 1.25rem);
   --text-lead--line-height: 1.6;
   --text-body: clamp(1rem, 0.97rem + 0.12vw, 1.0625rem);
   --text-body--line-height: 1.65;
   --text-button: 0.9375rem;
   --text-button--line-height: 1.2;
-  --text-eyebrow: 0.8125rem;
+  /* Expanded, widely tracked labels — the "ticket stub" voice of the brand. */
+  --text-eyebrow: 0.75rem;
   --text-eyebrow--line-height: 1.4;
-  --text-eyebrow--letter-spacing: 0.14em;
+  --text-eyebrow--letter-spacing: 0.22em;
   --text-eyebrow--font-weight: 600;
+  /* Large editorial serif for statements and quotes. */
+  --text-statement: clamp(1.75rem, 1.05rem + 2.9vw, 3.75rem);
+  --text-statement--line-height: 1.12;
+  --text-statement--letter-spacing: -0.012em;
 
   /* ------------------------------------------------------ Layout widths */
   --container-content: 80rem; /* 1280px */
@@ -106,7 +122,9 @@
 /* Fonts are injected by next/font as CSS variables on <html>. */
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-outfit), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display:
+    var(--font-archivo), "Arial Narrow", var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-instrument-serif), ui-serif, Georgia, "Times New Roman", serif;
 }
 
 /* ------------------------------------------------------------------ Base */
@@ -130,6 +148,7 @@
   h3,
   h4 {
     font-family: var(--font-display);
+    font-stretch: 90%;
     text-wrap: balance;
   }
 
@@ -156,7 +175,7 @@
     display: none;
   }
 
-  /* In-page anchors (/digital-solutions#seo) land below the sticky header. */
+  /* In-page anchors (/products#flags) land below the sticky header. */
   html {
     scroll-padding-top: 6rem;
   }
@@ -497,31 +516,29 @@
 }
 @utility site-header {
   --hdr: 1;
-  background-color: color-mix(in oklab, var(--color-white) calc(var(--hdr) * 86%), transparent);
-  border-bottom: 1px solid
-    color-mix(in oklab, var(--color-line) calc(var(--hdr) * 100%), transparent);
-  box-shadow:
-    0 1px 0 rgb(19 50 57 / calc(var(--hdr) * 0.04)),
-    0 10px 30px -18px rgb(19 50 57 / calc(var(--hdr) * 0.35));
-  backdrop-filter: blur(calc(var(--hdr) * 16px)) saturate(calc(1 + var(--hdr) * 0.5));
-  -webkit-backdrop-filter: blur(calc(var(--hdr) * 16px)) saturate(calc(1 + var(--hdr) * 0.5));
+  /* Dark "stage glass": clear over a hero, deep frosted night once the page scrolls. */
+  view-transition-name: site-header;
+  background-color: color-mix(in oklab, var(--color-stage) calc(var(--hdr) * 78%), transparent);
+  border-bottom: 1px solid rgb(255 255 255 / calc(var(--hdr) * 0.1));
+  backdrop-filter: blur(calc(var(--hdr) * 18px)) saturate(calc(1 + var(--hdr) * 0.4));
+  -webkit-backdrop-filter: blur(calc(var(--hdr) * 18px)) saturate(calc(1 + var(--hdr) * 0.4));
 }
 @supports (animation-timeline: scroll()) {
   body:has([data-hero="dark"]) .site-header {
     animation: vc-header-solidify linear both;
     animation-timeline: scroll(root);
-    animation-range: 0 140px;
+    animation-range: 0 160px;
   }
 }
-/* Header text and icons follow the same progress: white over the hero, ink once solid. */
+/* Header text stays light on the dark stage glass. */
 @utility hdr-fg {
-  color: color-mix(in oklab, var(--color-ink) calc(var(--hdr) * 100%), var(--color-white));
+  color: var(--color-white);
 }
 @utility hdr-logo-dark {
-  opacity: var(--hdr);
+  opacity: 0;
 }
 @utility hdr-logo-light {
-  opacity: calc(1 - var(--hdr));
+  opacity: 1;
 }
 /* A dark hero slides up under the sticky header so the header can sit on top of it. */
 @utility under-header {
@@ -822,139 +839,6 @@
   }
 }
 
-/* Digital mock-ups: gentle float, a chart that keeps growing, a notification that pops in. */
-@keyframes vc-float {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: 0 -10px;
-  }
-}
-@keyframes vc-bar {
-  0%,
-  100% {
-    scale: 1 0.55;
-  }
-  50% {
-    scale: 1 1;
-  }
-}
-@keyframes vc-notify {
-  0%,
-  15% {
-    opacity: 0;
-    translate: 0 8px;
-  }
-  25%,
-  85% {
-    opacity: 1;
-    translate: 0 0;
-  }
-  100% {
-    opacity: 0;
-    translate: 0 -4px;
-  }
-}
-@keyframes vc-typing {
-  0%,
-  60%,
-  100% {
-    translate: 0 0;
-    opacity: 0.4;
-  }
-  30% {
-    translate: 0 -3px;
-    opacity: 1;
-  }
-}
-.mock-bar {
-  transform-origin: bottom;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .float-slow {
-    animation: vc-float 7s ease-in-out infinite;
-  }
-  .mock-bar {
-    animation: vc-bar 3.6s ease-in-out infinite;
-  }
-  .mock-notify {
-    animation: vc-notify 6s var(--ease-brand) infinite;
-  }
-  .typing-dots > span {
-    animation: vc-typing 1.2s ease-in-out infinite;
-  }
-  .typing-dots > span:nth-child(2) {
-    animation-delay: 0.15s;
-  }
-  .typing-dots > span:nth-child(3) {
-    animation-delay: 0.3s;
-  }
-}
-
-/* Workflow: a signal travels from the first step to the last; each node lights as it passes. */
-@keyframes vc-travel-x {
-  0% {
-    translate: 0 0;
-    opacity: 0;
-  }
-  8% {
-    opacity: 1;
-  }
-  92% {
-    opacity: 1;
-  }
-  100% {
-    translate: 100% 0;
-    opacity: 0;
-  }
-}
-@keyframes vc-travel-y {
-  0% {
-    translate: 0 0;
-    opacity: 0;
-  }
-  8% {
-    opacity: 1;
-  }
-  92% {
-    opacity: 1;
-  }
-  100% {
-    translate: 0 100%;
-    opacity: 0;
-  }
-}
-@keyframes vc-node-lit {
-  0%,
-  100% {
-    border-color: rgb(255 255 255 / 0.2);
-    background-color: var(--color-night);
-    color: var(--color-white);
-  }
-  6%,
-  16% {
-    border-color: var(--color-yellow-400);
-    background-color: var(--color-yellow-400);
-    color: var(--color-ink);
-  }
-}
-@media (prefers-reduced-motion: no-preference) {
-  .workflow-signal {
-    animation: vc-travel-y 6s linear infinite;
-  }
-  .workflow-node {
-    animation: vc-node-lit 6s linear infinite;
-    animation-delay: calc(var(--step) * 1.2s - 0.2s);
-  }
-  @media (min-width: 40rem) {
-    .workflow-signal {
-      animation-name: vc-travel-x;
-    }
-  }
-}
-
 /* Lock page scroll while the mobile menu dialog is open. */
 html:has(dialog[data-mobile-nav][open]) {
   overflow: hidden;
@@ -971,11 +855,13 @@ html:has(dialog[data-mobile-nav][open]) {
 }
 .footer-wordmark {
   font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(3rem, 1rem + 10.5vw, 11.5rem);
-  line-height: 1;
-  padding-bottom: 0.08em;
-  letter-spacing: -0.04em;
+  font-weight: 800;
+  font-stretch: 72%;
+  text-transform: uppercase;
+  font-size: clamp(3.5rem, 1rem + 13.2vw, 15rem);
+  line-height: 0.9;
+  padding-bottom: 0.04em;
+  letter-spacing: -0.01em;
   white-space: nowrap;
   color: transparent;
   -webkit-text-stroke: 1px color-mix(in oklab, white 22%, transparent);
@@ -1003,7 +889,7 @@ html:has(dialog[data-mobile-nav][open]) {
 }
 
 /*
- * Ambient loops (glows, network, ticker, mock-ups) pause while off screen, so a long page
+ * Ambient loops (glows, beams, tickers, cue lights) pause while off screen, so a long page
  * never runs animations nobody can see. RevealController toggles `data-paused`.
  */
 [data-ambient][data-paused],
@@ -1011,120 +897,174 @@ html:has(dialog[data-mobile-nav][open]) {
   animation-play-state: paused !important;
 }
 
-/* ------------------------------------------------------------ Service visuals */
-/*
- * Loops for ServiceVisual (src/components/visuals). Transform and opacity only, so they run on
- * the compositor; the root is [data-ambient] and pauses off screen. Without motion every part
- * simply shows its finished state.
- */
-@keyframes vis-float {
-  0%,
-  100% {
-    translate: 0 0;
-  }
-  50% {
-    translate: 0 -8px;
-  }
+/* Lead form: the Events / Branding & Print switch shows one group of service chips (CSS only). */
+.lead-services:has(#lead-division-events:checked) [data-division="print"],
+.lead-services:has(#lead-division-print:checked) [data-division="events"] {
+  display: none;
 }
-@keyframes vis-pop {
-  0% {
-    opacity: 0;
-    translate: 0 8px;
-  }
-  6%,
-  82% {
-    opacity: 1;
-    translate: 0 0;
-  }
-  92%,
-  100% {
-    opacity: 0;
-    translate: 0 0;
-  }
-}
-@keyframes vis-bar {
-  from {
-    scale: 1 0.55;
-  }
-  to {
-    scale: 1 1;
-  }
-}
-@keyframes vis-ring {
+/* Lead form success: a ring that pulses out from the tick. */
+@keyframes vc-ring {
   from {
     opacity: 0.8;
     scale: 1;
   }
   to {
     opacity: 0;
-    scale: 2.6;
+    scale: 1.7;
   }
 }
-@keyframes vis-caret {
-  50% {
-    opacity: 0;
+@media (prefers-reduced-motion: no-preference) {
+  .vis-ring {
+    animation: vc-ring 1.8s var(--ease-brand) infinite;
   }
 }
-@keyframes vis-sweep {
+
+/* ===================================================================== */
+/* Stage system (events-first redesign)                                   */
+/* ===================================================================== */
+
+/*
+ * Type voice. Poster headlines (hero, display, h1) are Archivo, condensed and uppercase —
+ * the scale of a show poster. Section titles (h2, h3) stay sentence case, semi-condensed.
+ * Any <em> inside a headline becomes the editorial accent: Instrument Serif italic, in
+ * spotlight yellow on dark sections and deep teal on light ones (see `Accent`).
+ * Labels (eyebrows) are Archivo expanded, widely tracked: the "ticket stub" voice.
+ */
+@layer components {
+  .text-hero,
+  .text-display,
+  .text-h1 {
+    font-family: var(--font-display);
+    font-stretch: 72%;
+    text-transform: uppercase;
+    text-wrap: balance;
+  }
+  .text-h2 {
+    font-family: var(--font-display);
+    font-stretch: 88%;
+  }
+  .text-h3 {
+    font-family: var(--font-display);
+    font-stretch: 92%;
+  }
+  .text-eyebrow {
+    font-family: var(--font-display);
+    font-stretch: 125%;
+  }
+  .text-statement {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+
+  :is(h1, h2, h3, .text-hero, .text-display, .text-h1, .text-h2, .text-h3) em,
+  .accent {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    font-stretch: 100%;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    color: var(--color-teal-800);
+    /* Instrument Serif runs small next to condensed caps: lift it to the cap height. */
+    font-size: 1.06em;
+    padding-right: 0.04em;
+  }
+  :is(.text-hero, .text-display, .text-h1) em {
+    font-size: 1.12em;
+    line-height: 0.8;
+  }
+  [data-tone="dark"] :is(h1, h2, h3, .text-hero, .text-display, .text-h1, .text-h2, .text-h3) em,
+  [data-tone="dark"] .accent {
+    color: var(--color-yellow-400);
+  }
+  .text-statement em {
+    font-style: italic;
+    color: var(--color-teal-800);
+  }
+  [data-tone="dark"] .text-statement em {
+    color: var(--color-yellow-400);
+  }
+}
+
+/* Film grain over photography and dark stages: one static noise tile, blended softly. */
+/* Use on an absolutely positioned overlay (`absolute inset-0 grain`). */
+@utility grain {
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.1;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
+
+/* Photographs on dark stages: a cinematic vignette and a floor shadow for legible type. */
+@utility shade-cinema {
+  background:
+    linear-gradient(
+      to top,
+      var(--color-stage) 0%,
+      color-mix(in oklab, var(--color-stage) 72%, transparent) 26%,
+      transparent 62%
+    ),
+    linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-stage) 78%, transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(120% 90% at 50% 40%, transparent 55%, var(--color-stage) 100%);
+}
+@utility shade-floor {
+  background: linear-gradient(
+    to top,
+    var(--color-stage) 0%,
+    color-mix(in oklab, var(--color-stage) 60%, transparent) 45%,
+    transparent 100%
+  );
+}
+
+/* ------------------------------------------------------------- Hero scenes */
+/*
+ * The homepage hero is a sequence of "scenes": photographs that cross-fade while the visible
+ * one drifts slowly (a Ken Burns move). Only opacity and transform animate.
+ */
+@keyframes vc-kenburns {
   from {
-    translate: -100% 0;
+    scale: 1.14;
+    translate: 1.5% 1%;
   }
   to {
-    translate: 100% 0;
+    scale: 1.02;
+    translate: -1% -0.5%;
   }
 }
-@keyframes vis-travel-x {
-  from {
-    translate: 0 0;
+.scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1600ms var(--ease-brand);
+}
+.scene[data-active] {
+  opacity: 1;
+}
+.scene > img {
+  will-change: scale, translate;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scene[data-active] > img {
+    animation: vc-kenburns calc(var(--scene-ms, 7000ms) + 1600ms) linear both;
   }
-  to {
-    translate: 100% 0;
+  [data-paused] .scene[data-active] > img,
+  [data-scenes-paused] .scene[data-active] > img {
+    animation-play-state: paused;
   }
 }
-@keyframes vis-travel-y {
-  0% {
-    opacity: 1;
-    translate: 0 0;
-  }
-  75% {
-    opacity: 1;
-    translate: 0 100%;
-  }
-  80%,
-  100% {
-    opacity: 0;
-    translate: 0 100%;
-  }
-}
-@keyframes vis-rise {
-  0% {
-    opacity: 0;
-    translate: 0 0;
-    scale: 0.6;
-  }
-  20% {
-    opacity: 1;
-    scale: 1;
-  }
-  100% {
-    opacity: 0;
-    translate: 0 -70px;
-    scale: 1;
-  }
-}
-@keyframes vis-beat {
-  0%,
-  100% {
-    scale: 1;
-  }
-  15% {
-    scale: 1.3;
-  }
-  30% {
-    scale: 1;
-  }
-}
-@keyframes vis-scan {
+
+/* Progress of the current scene in the hero index (fills over one scene). */
+@keyframes vc-progress {
   from {
     scale: 0 1;
   }
@@ -1132,100 +1072,326 @@ html:has(dialog[data-mobile-nav][open]) {
     scale: 1 1;
   }
 }
-@keyframes vis-lit {
-  0%,
-  30%,
-  100% {
-    opacity: 0;
+.scene-progress {
+  transform-origin: left;
+  scale: 0 1;
+}
+.scene-progress[data-active] {
+  scale: 1 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .scene-progress[data-active] {
+    animation: vc-progress var(--scene-ms, 7000ms) linear both;
   }
-  8%,
-  22% {
-    opacity: 1;
+  /* Paused: the current scene's bar simply shows full. */
+  [data-scenes-paused] .scene-progress[data-active] {
+    animation: none;
   }
 }
 
-.vis-shimmer {
-  pointer-events: none;
-  overflow: hidden;
+/* Stage beams: soft light shafts that sweep slowly over the hero (decorative, compositor). */
+@keyframes vc-beam {
+  from {
+    rotate: -9deg;
+  }
+  to {
+    rotate: 9deg;
+  }
 }
-.vis-shimmer::after {
+.hero-beam {
+  position: absolute;
+  top: -12%;
+  width: 34%;
+  height: 135%;
+  transform-origin: 50% 0;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--color-yellow-400) 26%, transparent),
+    transparent 72%
+  );
+  clip-path: polygon(46% 0, 54% 0, 100% 100%, 0 100%);
+  filter: blur(18px);
+  opacity: 0.55;
+}
+.hero-beam-cool {
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--color-cyan-300) 24%, transparent),
+    transparent 70%
+  );
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-beam {
+    animation: vc-beam 11s ease-in-out infinite alternate;
+  }
+  .hero-beam-cool {
+    animation-duration: 14s;
+    animation-direction: alternate-reverse;
+  }
+  [data-paused] .hero-beam {
+    animation-play-state: paused;
+  }
+}
+
+/* Cursor spotlight: a soft pool of light that follows the pointer (set by HeroSpotlight). */
+.cursor-spotlight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--spot-o, 0);
+  transition: opacity 600ms var(--ease-brand);
+  background: radial-gradient(
+    32rem 32rem at var(--spot-x, 50%) var(--spot-y, 40%),
+    color-mix(in oklab, var(--color-yellow-400) 16%, transparent),
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+}
+
+/* "Scroll" cue: a hairline with a light running down it. */
+@keyframes vc-cue {
+  0% {
+    translate: 0 -100%;
+  }
+  100% {
+    translate: 0 200%;
+  }
+}
+.scroll-cue {
+  position: relative;
+  overflow: hidden;
+  width: 1px;
+  height: 3.5rem;
+  background: rgb(255 255 255 / 0.22);
+}
+.scroll-cue::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    100deg,
-    transparent 30%,
-    rgb(255 255 255 / 0.16) 50%,
-    transparent 70%
-  );
-  translate: -100% 0;
+  height: 40%;
+  background: var(--color-yellow-400);
 }
-.vis-bar {
-  transform-origin: bottom;
-}
-.vis-lit {
-  position: relative;
-}
-.vis-lit::after {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: inherit;
-  border: 2px solid var(--color-yellow-400);
-  opacity: 0;
-}
-
 @media (prefers-reduced-motion: no-preference) {
-  .vis-float {
-    animation: vis-float 7s ease-in-out infinite;
-  }
-  .vis-pop {
-    animation: vis-pop 8s var(--ease-brand) infinite both;
-    animation-delay: calc(var(--i, 0) * 0.6s);
-  }
-  .vis-bar {
-    animation: vis-bar 2.4s ease-in-out infinite alternate both;
-    animation-delay: calc(var(--i, 0) * 0.18s);
-  }
-  .vis-ring {
-    animation: vis-ring 2.4s ease-out infinite;
-  }
-  .vis-caret {
-    animation: vis-caret 1s steps(1) infinite;
-  }
-  .vis-shimmer::after {
-    animation: vis-sweep 3.2s ease-in-out infinite;
-  }
-  .vis-travel {
-    animation: vis-travel-x 3s ease-in-out infinite alternate;
-  }
-  .vis-travel-y {
-    animation: vis-travel-y 4.8s linear infinite;
-  }
-  .vis-rise {
-    animation: vis-rise 3.6s ease-out infinite both;
-    animation-delay: calc(var(--i, 0) * 1.2s);
-  }
-  .vis-beat {
-    animation: vis-beat 1.8s ease-in-out infinite;
-  }
-  .vis-scan {
-    animation: vis-scan 3.2s var(--ease-brand) infinite alternate both;
-    animation-delay: calc(var(--i, 0) * 0.3s);
-  }
-  .vis-lit::after {
-    animation: vis-lit 4.8s linear infinite;
-    animation-delay: calc(var(--i, 0) * 1.2s);
+  .scroll-cue::after {
+    animation: vc-cue 2.2s var(--ease-brand) infinite;
   }
 }
 
-/* Lead form: the Events / Digital switch shows one group of service chips (CSS only). */
-.lead-services:has(#lead-division-events:checked) [data-division="digital"],
-.lead-services:has(#lead-division-digital:checked) [data-division="events"] {
+/* Outlined display type (marquees, the footer wordmark, big numerals). */
+@utility text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px currentColor;
+  -webkit-text-stroke-color: var(--outline-color, rgb(255 255 255 / 0.5));
+}
+
+/* Image "pills" set inline in editorial statements (the manifesto). */
+@utility pill-media {
+  display: inline-block;
+  position: relative;
+  vertical-align: -0.12em;
+  height: 0.92em;
+  width: 2.1em;
+  margin-inline: 0.12em;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: var(--color-night-soft);
+}
+
+/* ------------------------------------------------------- Experience index */
+/*
+ * The interactive index of experiences: hovering or focusing an item lights it and wipes its
+ * photograph into the frame. Every photo is stacked in the frame; only the active one shows.
+ */
+.xp-item {
+  --xp-dim: 0.42;
+}
+.xp-list:has(.xp-item[data-active]) .xp-item:not([data-active]) .xp-title {
+  opacity: var(--xp-dim);
+}
+.xp-title {
+  transition:
+    opacity var(--duration-slow) var(--ease-brand),
+    translate var(--duration-slow) var(--ease-brand),
+    color var(--duration-slow) var(--ease-brand);
+}
+.xp-item[data-active] .xp-title {
+  translate: 0.5rem 0;
+}
+.xp-frame > .xp-media {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 0 100%);
+  transition: clip-path 900ms var(--ease-brand);
+}
+.xp-frame > .xp-media[data-active] {
+  clip-path: inset(0 0 0 0);
+  z-index: 1;
+}
+.xp-frame > .xp-media > img {
+  scale: 1.12;
+  transition: scale 1600ms var(--ease-brand);
+}
+.xp-frame > .xp-media[data-active] > img {
+  scale: 1;
+}
+
+/* ------------------------------------------------------------ Run of show */
+/*
+ * Horizontal "run of show" on large screens: the section is tall, its stage sticks to the
+ * viewport and the track slides sideways as the page scrolls (progress `--ros` 0 → 1 is set by
+ * RunOfShow). Small screens and reduced motion get a plain vertical sequence instead.
+ */
+.ros-track {
+  translate: calc(var(--ros, 0) * var(--ros-distance, 0px) * -1) 0;
+  will-change: translate;
+}
+.ros-meter {
+  transform-origin: left;
+  scale: var(--ros, 0) 1;
+}
+
+/* ---------------------------------------------------------------- Marquee XL */
+@utility marquee-slow {
+  --marquee-duration: 70s;
+}
+
+/* -------------------------------------------------------- Reveal: curtain */
+/*
+ * Media opens like a curtain (clip from the centre) as it scrolls into view. The clip sits on
+ * the children: a clipped element itself would never count as intersecting the viewport.
+ */
+@media screen and (prefers-reduced-motion: no-preference) {
+  html.rv-ready .reveal-curtain:not(.is-in) > * {
+    clip-path: inset(0 50% 0 50%);
+  }
+}
+@utility reveal-curtain {
+  & > * {
+    transition: clip-path 1300ms var(--ease-brand);
+    transition-delay: calc(var(--rv-i, 0) * 90ms);
+  }
+}
+
+/* ------------------------------------------------------- Page transitions */
+/*
+ * Route changes cross-fade (React <ViewTransition> around the page in the root layout). The
+ * header is its own layer so it never fades; clicks pass through the brief overlay.
+ */
+::view-transition {
+  pointer-events: none;
+}
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 420ms;
+  animation-timing-function: var(--ease-brand);
+}
+::view-transition-group(site-header) {
+  animation: none;
+  z-index: 100;
+}
+::view-transition-old(site-header) {
   display: none;
 }
+::view-transition-new(site-header) {
+  animation: none;
+}
 @media (prefers-reduced-motion: reduce) {
-  .vis-rise {
-    display: none;
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
+
+/* -------------------------------------------------- Production house cues */
+/*
+ * The five verbs of the production house light one after another, like cue lights on a
+ * stage manager's desk: outlined at rest, solid when lit. Static and solid with reduced motion.
+ */
+@keyframes vc-cue-lit {
+  0%,
+  17% {
+    color: var(--color-ink);
+    -webkit-text-stroke-color: var(--color-ink);
+  }
+  21%,
+  100% {
+    color: transparent;
+    -webkit-text-stroke-color: color-mix(in oklab, var(--color-ink) 55%, transparent);
+  }
+}
+@keyframes vc-cue-dot {
+  0%,
+  17% {
+    opacity: 1;
+    scale: 1;
+  }
+  21%,
+  100% {
+    opacity: 0;
+    scale: 0.4;
+  }
+}
+.cue-text {
+  color: var(--color-ink);
+  -webkit-text-stroke: 1px var(--color-ink);
+}
+.cue-word {
+  position: relative;
+}
+.cue-word::before {
+  content: "";
+  position: absolute;
+  right: 2rem;
+  top: 50%;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: -0.25rem;
+  border-radius: 9999px;
+  background: var(--color-yellow-400);
+  opacity: 0;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cue-text {
+    animation: vc-cue-lit 9s linear infinite;
+    /* Negative delays start each word part-way through the cycle: one is always lit. */
+    animation-delay: calc(var(--cue-i, 0) * 1.8s - 9s);
+  }
+  .cue-word::before {
+    animation: vc-cue-dot 9s linear infinite;
+    animation-delay: calc(var(--cue-i, 0) * 1.8s - 9s);
+  }
+  [data-paused] .cue-text,
+  [data-paused] .cue-word::before {
+    animation-play-state: paused;
+  }
+}
+
+/* Inner-page hero photographs settle in with one slow camera move. */
+@keyframes vc-settle {
+  from {
+    scale: 1.12;
+  }
+  to {
+    scale: 1;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-still {
+    animation: vc-settle 9s var(--ease-brand) both;
+  }
+}
+
+/* Homepage "two doors": the door you point at (or tab into) opens wider on large screens. */
+@media (min-width: 64rem) {
+  .door {
+    transition: flex-grow 900ms var(--ease-brand);
+  }
+  ul:has(> .door:hover) > .door:hover,
+  ul:has(> .door:focus-within) > .door:focus-within {
+    flex-grow: 1.5;
   }
 }

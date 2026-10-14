@@ -36,20 +36,20 @@ describe("navigation in production", () => {
     expect(hrefs).toContain("/about");
     expect(hrefs).toContain("/contact");
     expect(hrefs).toContain("/services/exhibitions");
-    // The approved digital & AI offering: every service links to its own page.
+    // Both ways into the business: event services and the branding & print catalogue.
     for (const page of [
-      "/digital-solutions/seo",
-      "/digital-solutions/web-development",
-      "/digital-solutions/performance-marketing",
-      "/digital-solutions/ai-agents",
-      "/digital-solutions/generative-ai",
+      "/services",
+      "/services/branding-printing",
+      "/products",
+      "/products#flags",
     ]) {
       expect(hrefs, page).toContain(page);
     }
+    // The digital agency is a separate business and website.
+    expect(hrefs.some((href) => href.startsWith("/digital-solutions"))).toBe(false);
 
     // Unconfirmed: draft projects/industries, unapproved PDF and legal text.
     for (const hidden of [
-      "/digital-solutions#seo",
       "/projects",
       "/industries",
       "/company-profile",
@@ -60,17 +60,12 @@ describe("navigation in production", () => {
     }
   });
 
-  it("groups the digital menu by capability", async () => {
+  it("leads with the events menu, then branding & print", async () => {
     const model = await navigationFor("production");
-    const digital = model.primary.find((item) => item.id === "digital-solutions");
-    expect(digital?.kind).toBe("menu");
-    if (digital?.kind === "menu") {
-      expect(digital.sections.map((section) => section.title)).toEqual([
-        "Digital Marketing",
-        "Web & App Development",
-        "AI & Automation",
-      ]);
-    }
+    expect(model.primary.slice(0, 2).map((item) => item.label)).toEqual([
+      "Events",
+      "Branding & Print",
+    ]);
   });
 
   it("carries no review labels", async () => {
@@ -80,7 +75,7 @@ describe("navigation in production", () => {
 
   it("uses only root-relative internal links", async () => {
     for (const href of allHrefs(await navigationFor("production"))) {
-      // A path, optionally with an in-page anchor (/digital-solutions#seo).
+      // A path, optionally with an in-page anchor (/products#flags).
       expect(href, href).toMatch(/^\/[a-z0-9\-/]*(#[a-z0-9-]+)?$/);
     }
   });
@@ -90,7 +85,6 @@ describe("navigation in preview", () => {
   it("shows unconfirmed pages for review", async () => {
     const model = await navigationFor("preview");
     const hrefs = allHrefs(model);
-    expect(hrefs).toContain("/digital-solutions/ai-agents");
     // Draft projects and industries are reviewable in preview only.
     expect(hrefs).toContain("/projects");
     expect(hrefs).toContain("/industries");

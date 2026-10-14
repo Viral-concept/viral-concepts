@@ -1,6 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { digitalServices } from "@/content/digital-services";
 import { projects } from "@/content/projects";
 import { services } from "@/content/services";
 import { isProofImage, isPublishable } from "@/lib/publishing";
@@ -11,7 +10,7 @@ import type { Project } from "@/types/content";
  * confirmed, and nothing the client has not cleared may name them.
  */
 const allProjects: readonly Project[] = projects;
-const serviceSlugs = new Set<string>([...services, ...digitalServices].map((s) => s.slug));
+const serviceSlugs = new Set<string>([...services].map((s) => s.slug));
 
 function publicText(project: Project): string[] {
   return [

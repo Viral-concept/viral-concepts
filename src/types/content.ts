@@ -23,7 +23,7 @@ export type ContentStatus = "live" | "proposed" | "draft";
  * - `company-profile`: the client's Company Profile PDF (factual source of truth), with page numbers.
  * - `client-confirmed`: confirmed in writing by the client after discovery.
  * - `owner-approved`: approved for publication by the website owner (who briefs the build for the
- *   client), with the date. Used for the expanded digital & AI offering and its page copy.
+ *   client), with the date. Used for positioning copy approved by the website owner.
  * - `stock-photo`: a licensed stock photograph (provider, page and photographer recorded).
  *   Illustrative only — never presented as the company's own work, team or premises.
  * - `template`: the website template PDF. Visual reference only — never publishable.
@@ -102,7 +102,7 @@ export interface SeoFields {
 /* Services                                                                    */
 /* -------------------------------------------------------------------------- */
 
-export type PillarId = "events-experiences" | "branding-advertising" | "digital-technology";
+export type PillarId = "events-experiences" | "branding-advertising";
 
 export interface Pillar {
   readonly id: PillarId;
@@ -110,11 +110,8 @@ export interface Pillar {
   readonly summary: string;
 }
 
-/** The two service verticals map to the two URL roots: /services and /digital-solutions. */
-export type ServiceVertical = "services" | "digital-solutions";
-
-/** How digital services are grouped on the site. */
-export type DigitalCapability = "marketing" | "build" | "ai";
+/** Every service lives under /services. */
+export type ServiceVertical = "services";
 
 export interface OfferingGroup {
   readonly title: string;
@@ -141,27 +138,12 @@ export interface ServicePageContent extends Governed {
   readonly intro: readonly string[];
   readonly highlights: readonly ServiceHighlight[];
   readonly cta: { readonly title: string; readonly lead: string };
-  /** "What you get": concrete deliverables, shown as a checklist. */
-  readonly deliverables?: readonly string[];
-  /** How this service runs, step by step. Replaces the company-wide process on the page. */
-  readonly steps?: readonly ServiceStep[];
-  /** Platforms and technologies the service works with (names only — no partner claims). */
-  readonly platforms?: readonly string[];
-  /** Supporting photo beside the overview. Illustrative; never shown as delivered work. */
-  readonly photo?: ImageAsset;
-}
-
-export interface ServiceStep {
-  readonly title: string;
-  readonly body: string;
 }
 
 export interface Service extends Governed {
   readonly slug: string;
   readonly vertical: ServiceVertical;
   readonly pillar: PillarId;
-  /** Digital services only: which capability group they belong to. */
-  readonly capability?: DigitalCapability;
   /** Full name used in H1s and cards. */
   readonly title: string;
   /** One-line value statement for cards and menus. */
@@ -180,13 +162,7 @@ export interface Service extends Governed {
 /* -------------------------------------------------------------------------- */
 
 export type ProjectCategory =
-  | "events"
-  | "exhibitions"
-  | "branding"
-  | "production"
-  | "festive-decor"
-  | "advertising"
-  | "digital";
+  "events" | "exhibitions" | "branding" | "production" | "festive-decor" | "advertising";
 
 export interface ProjectClient {
   readonly name: string;

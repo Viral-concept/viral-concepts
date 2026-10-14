@@ -1,8 +1,9 @@
 import type { Service } from "@/types/content";
 
+import { eventPhotos } from "../event-photos";
 import { companyProfile } from "../sources";
 
-/** Page copy restates CP p.9, 22. Hero photo (if any) is an interim draft. */
+/** Page copy restates CP p.9, 22. Hero photo: licensed stock that sets the scene (content/event-photos.ts). */
 export const advertisingPr = {
   slug: "advertising-pr",
   vertical: "services",
@@ -56,6 +57,7 @@ export const advertisingPr = {
   status: "live",
   verified: true,
   source: companyProfile(9, 22),
+  heroImage: eventPhotos.immersiveScreens,
   page: {
     status: "live",
     verified: true,

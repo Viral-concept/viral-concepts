@@ -21,7 +21,7 @@ interface NavLinkProps {
 
 export function NavLink({ href, className, children, exact = false }: NavLinkProps) {
   const pathname = usePathname();
-  // An in-page anchor (/digital-solutions#seo) is a section of a page, never the current page.
+  // An in-page anchor (/products#flags) is a section of a page, never the current page.
   const active = !href.includes("#") && (exact ? pathname === href : isActivePath(pathname, href));
   return (
     <Link href={href} aria-current={active ? "page" : undefined} className={className}>

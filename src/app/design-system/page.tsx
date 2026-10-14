@@ -152,8 +152,8 @@ export default function DesignSystemPage() {
           <ButtonLink href={routes.contact} icon="arrow-right">
             Start a Project
           </ButtonLink>
-          <ButtonLink href={routes.digitalSolutions} variant="inverse">
-            Explore Digital Solutions
+          <ButtonLink href={routes.products} variant="inverse">
+            Explore branding & print
           </ButtonLink>
           <ButtonLink href={routes.about} variant="quietInverse">
             About Viral Concepts

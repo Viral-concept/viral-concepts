@@ -7,7 +7,7 @@ export const contentType = OG_CONTENT_TYPE;
 
 export default function Image() {
   return renderOgImage({
-    eyebrow: "Events · Branding · Production · Advertising · Digital",
+    eyebrow: "Events · Exhibitions · Branding · Print · Production",
     title: "Events, branding and production, under one roof",
   });
 }

@@ -1,9 +1,9 @@
 import type { Service } from "@/types/content";
 
-import { media } from "../media";
+import { eventPhotos } from "../event-photos";
 import { companyProfile } from "../sources";
 
-/** Page copy restates CP p.7, 16, 17, 26. Hero photo (if any) is an interim draft. */
+/** Page copy restates CP p.7, 16, 17, 26. Hero photo: licensed stock that sets the scene (content/event-photos.ts). */
 export const exhibitions = {
   slug: "exhibitions",
   vertical: "services",
@@ -50,7 +50,7 @@ export const exhibitions = {
   status: "live",
   verified: true,
   source: companyProfile(17, 26),
-  heroImage: media.exhibitionStallDesigner,
+  heroImage: eventPhotos.tradeShow,
   page: {
     status: "live",
     verified: true,

@@ -10,7 +10,7 @@ export const routes = {
   home: "/",
   about: "/about",
   services: "/services",
-  digitalSolutions: "/digital-solutions",
+  products: "/products",
   projects: "/projects",
   industries: "/industries",
   companyProfile: "/company-profile",
@@ -21,7 +21,7 @@ export const routes = {
 
 export type StaticRoute = (typeof routes)[keyof typeof routes];
 
-/** /services/[slug] or /digital-solutions/[slug], depending on the service's vertical. */
+/** /services/[slug]. */
 export function serviceRoute(service: Pick<Service, "slug" | "vertical">): string {
   return `/${service.vertical}/${service.slug}`;
 }

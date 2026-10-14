@@ -37,7 +37,7 @@ import type { ServiceOption } from "@/lib/leads/services";
  * The enquiry form, in three short steps: what you need → the project → how to reach you.
  *
  * - Service and budget are chosen with large tappable chips (native radio buttons underneath,
- *   so keyboard, screen readers and plain form posts all work). The Events / Digital switch is
+ *   so keyboard, screen readers and plain form posts all work). The Events / Branding & Print switch is
  *   pure CSS (see `.lead-services` in globals.css), so it works before JavaScript loads.
  * - Validates in the browser with the same schema the server uses, for instant feedback; the
  *   Server Action validates again and is the only check that counts.
@@ -62,8 +62,8 @@ export interface LeadFormProps {
 }
 
 const DIVISIONS = [
-  { id: "events", label: "Events & Production", group: "Services", icon: "spark" },
-  { id: "digital", label: "Digital Solutions", group: "Digital Solutions", icon: "code" },
+  { id: "events", label: "Events & Exhibitions", group: "Events", icon: "spark" },
+  { id: "print", label: "Branding & Print", group: "Branding & Print", icon: "expand" },
 ] as const satisfies readonly {
   id: string;
   label: string;
@@ -90,7 +90,7 @@ function composeBrief(values: LeadValues, serviceLabel: string): string {
   return [
     `Service: ${serviceLabel}`,
     values.budget ? `Budget: ${budgetLabel(values.budget)}` : undefined,
-    values.eventDate ? `Event or launch date: ${values.eventDate}` : undefined,
+    values.eventDate ? `Event date or deadline: ${values.eventDate}` : undefined,
     "",
     values.message?.trim() ?? "",
     "",
@@ -496,7 +496,7 @@ export function LeadForm({
         <StepHeading
           index={2}
           title="Tell us about the project"
-          hint="What is it, where, roughly how big, and anything you already have in mind."
+          hint="For an event: what, where, when and how many guests. For print: the product, size and quantity."
         />
         <Field
           id="lead-message"
@@ -526,7 +526,7 @@ export function LeadForm({
         <Field
           id="lead-eventDate"
           name="eventDate"
-          label="Event or launch date"
+          label="Event date or deadline"
           error={fieldError("eventDate")}
           className="sm:max-w-xs"
         >

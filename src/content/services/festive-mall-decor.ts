@@ -1,9 +1,9 @@
 import type { Service } from "@/types/content";
 
-import { media } from "../media";
+import { eventPhotos } from "../event-photos";
 import { companyProfile } from "../sources";
 
-/** Page copy restates CP p.3, 16, 21, 24. Hero photo (if any) is an interim draft. */
+/** Page copy restates CP p.3, 16, 21, 24. Hero photo: licensed stock that sets the scene (content/event-photos.ts). */
 export const festiveMallDecor = {
   slug: "festive-mall-decor",
   vertical: "services",
@@ -45,7 +45,7 @@ export const festiveMallDecor = {
   status: "live",
   verified: true,
   source: companyProfile(21, 24),
-  heroImage: media.showroomFestiveLighting,
+  heroImage: eventPhotos.ramadanLanterns,
   page: {
     status: "live",
     verified: true,

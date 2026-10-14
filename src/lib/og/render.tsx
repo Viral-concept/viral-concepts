@@ -94,12 +94,12 @@ export async function renderOgImage({
             marginTop: 20,
             maxWidth: 900,
             fontFamily: "Outfit",
-            fontSize: titleSize(title),
+            fontSize: titleSize(title.replace(/\*/g, "")),
             lineHeight: 1.08,
             letterSpacing: -1.5,
           }}
         >
-          {title}
+          {title.replace(/\*/g, "")}
         </div>
       </div>
 

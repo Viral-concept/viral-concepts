@@ -1,50 +1,46 @@
-import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
-import { FaqSection } from "@/components/sections/FaqSection";
-import { FeatureList } from "@/components/sections/FeatureList";
 import { CtaBand } from "@/components/sections/CtaBand";
-import {
-  ServiceDeliverables,
-  ServiceOverview,
-  ServicePlatforms,
-  ServiceSteps,
-} from "@/components/sections/DigitalServiceSections";
-import { CAPABILITY_META } from "@/components/sections/home/DigitalBand";
-import { OfferingGroups } from "@/components/sections/OfferingGroups";
-import { PageBlocks, type PageBlock } from "@/components/sections/PageBlocks";
+import { EventOfferings, ServiceStory } from "@/components/sections/EventServiceSections";
+import { FaqSection } from "@/components/sections/FaqSection";
+import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
+import { BuiltToDeliver } from "@/components/sections/home/BuiltToDeliver";
+import { RunOfShow } from "@/components/sections/home/RunOfShow";
+import { PageBlocks } from "@/components/sections/PageBlocks";
 import { PageHero } from "@/components/sections/PageHero";
-import { ProcessSection } from "@/components/sections/ProcessSection";
+import { ProductGrid } from "@/components/sections/ProductGrid";
 import { RelatedServices } from "@/components/sections/RelatedServices";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { ButtonLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { ServiceVisual, hasServiceVisual } from "@/components/visuals/ServiceVisual";
+import { homeContent } from "@/content/home";
+import { HIGHLIGHTED_PROCESS_STEP } from "@/content/process";
+import { productCategories, productsLanding } from "@/content/products";
+import { serviceScenes } from "@/content/service-scenes";
 import {
   getContactChannels,
   getFaqs,
   getProjectsForService,
   getRelatedServices,
+  getVisible,
   getVisibleImage,
   hasProjectsPage,
   type ServiceWithPage,
 } from "@/lib/content";
 import { getSecondaryContactAction } from "@/lib/contact-actions";
 import { needsReviewBanner } from "@/lib/publishing";
-import { serviceJsonLd } from "@/lib/structured-data";
 import { contactRouteForService, routes, serviceRoute } from "@/lib/routes";
+import { serviceJsonLd } from "@/lib/structured-data";
 import type { SectionTone } from "@/types/ui";
 
+function present<T>(value: T | undefined): value is T {
+  return value !== undefined;
+}
+
 /**
- * Template for every service page (/services/[slug] and /digital-solutions/[slug]).
- *
- * Structure (Discovery doc, section F): hero → introduction → what we provide → why it matters
- * → related projects → process → FAQ → related services → CTA. Each page differs by content:
- * its own copy, offerings, highlights, FAQs, projects and cross-links. Sections without content
- * are omitted.
- *
- * Digital service pages add agency-style sections from their page content: an animated
- * illustration in the hero, a supporting photo beside the overview, "what you get", their own
- * delivery steps (instead of the company-wide process) and the platforms they work with.
+ * Template for every service page (/services/[slug]): cinematic photo hero → story beside a
+ * photo collage → what we deliver → (branding & printing: the product catalogue) → why it
+ * matters → related work → how we work (run of show) → FAQ → related services → finale.
+ * Each page differs by content; sections without content are omitted.
  */
 interface ServicePageProps {
   readonly service: ServiceWithPage;
@@ -53,46 +49,25 @@ interface ServicePageProps {
 
 export function ServicePage({ service, parent }: ServicePageProps) {
   const { page } = service;
+  const isPrint = service.slug === "branding-printing";
   const heroImage = getVisibleImage(service.heroImage);
-  const photo = getVisibleImage(page.photo);
   const projects = getProjectsForService(service.slug).slice(0, 3);
   const faqs = getFaqs(`service:${service.slug}`);
   const related = getRelatedServices(service);
   const { phone } = getContactChannels();
   const secondary = getSecondaryContactAction();
   const enquiryHref = contactRouteForService(service.slug);
-  const capability = service.capability ? CAPABILITY_META[service.capability] : undefined;
-  // A single offering that just repeats the service name ("SEO" → "Search engine optimisation")
-  // adds nothing, so the section needs at least two items to earn its place.
+  const ctaLabel = isPrint ? "Request a quote" : "Plan your event";
   const offeringCount = service.offerings.reduce((sum, group) => sum + group.items.length, 0);
-  const overviewTitle = `${service.title} in Dubai`;
-  // Digital pages with their own delivery steps use the agency layout; service lines keep
-  // the original order with the company-wide process.
-  const agencyLayout = (page.steps?.length ?? 0) > 0;
-
-  const highlights: PageBlock | false = page.highlights.length > 0 && {
-    key: "highlights",
-    render: (tone) => (
-      <FeatureList
-        tone={tone}
-        id="highlights"
-        eyebrow="Why it matters"
-        title="Why work with us"
-        items={page.highlights}
-      />
-    ),
-  };
-  const relatedProjects: PageBlock | false = projects.length > 0 && {
-    key: "projects",
-    render: (tone) => (
-      <FeaturedProjects
-        tone={tone}
-        projects={projects}
-        title="Related projects"
-        {...(hasProjectsPage() ? { allProjectsHref: routes.projects } : {})}
-      />
-    ),
-  };
+  const scenes = (serviceScenes[service.slug] ?? []).map(getVisibleImage).filter(present);
+  const credits = service.offerings.flatMap((group) => group.items).slice(0, 5);
+  const products = isPrint ? getVisible(productCategories) : [];
+  const acts = homeContent.runOfShow.acts
+    .map((act) => {
+      const image = getVisibleImage(act.image);
+      return image ? { ...act, image: { src: image.src } } : undefined;
+    })
+    .filter(present);
 
   return (
     <>
@@ -103,18 +78,15 @@ export function ServicePage({ service, parent }: ServicePageProps) {
           parent,
           { label: service.title, href: serviceRoute(service) },
         ]}
-        eyebrow={capability?.title ?? parent.label}
+        eyebrow={isPrint ? "Branding & print" : parent.label}
         title={service.seo.h1 ?? service.title}
         lead={service.summary}
         reviewItem={needsReviewBanner(service) ? service : page}
-        {...(heroImage ? { image: heroImage } : {})}
-        {...(!heroImage && hasServiceVisual(service.slug)
-          ? { visual: <ServiceVisual slug={service.slug} /> }
-          : {})}
+        {...(heroImage ? { image: heroImage, credits } : {})}
         actions={
           <>
             <ButtonLink href={enquiryHref} size="lg" icon="arrow-right">
-              Start a Project
+              {ctaLabel}
             </ButtonLink>
             {phone ? (
               <ButtonLink
@@ -134,88 +106,88 @@ export function ServicePage({ service, parent }: ServicePageProps) {
         blocks={[
           {
             key: "intro",
-            render: (tone) =>
-              photo ? (
-                <ServiceOverview
-                  tone={tone}
-                  title={overviewTitle}
-                  intro={page.intro}
-                  photo={photo}
-                  badge={{
-                    icon: capability?.icon ?? "spark",
-                    label: capability?.title ?? parent.label,
-                  }}
-                />
-              ) : (
-                <Section tone={tone} labelledBy="intro-title">
-                  <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-                    <SectionHeader
-                      id="intro-title"
-                      eyebrow="Overview"
-                      title={overviewTitle}
-                      className="lg:col-span-5"
-                    />
-                    <div className="flex flex-col gap-5 text-lead text-muted lg:col-span-7">
-                      {page.intro.map((paragraph) => (
-                        <p key={paragraph}>{paragraph}</p>
-                      ))}
-                    </div>
-                  </div>
-                </Section>
-              ),
+            fixedTone: "surface",
+            render: (tone) => (
+              <ServiceStory
+                tone={tone}
+                eyebrow="Overview"
+                title={`${service.title} in Dubai`}
+                intro={page.intro}
+                images={scenes}
+              />
+            ),
           },
           offeringCount >= 2 && {
             key: "offerings",
+            fixedTone: "night",
             render: (tone) => (
-              <OfferingGroups tone={tone} serviceTitle={service.title} groups={service.offerings} />
+              <EventOfferings tone={tone} serviceTitle={service.title} groups={service.offerings} />
             ),
           },
-          ...(agencyLayout
-            ? [
-                page.deliverables &&
-                  page.deliverables.length > 0 && {
-                    key: "deliverables",
-                    fixedTone: "night" as const,
-                    render: (tone: SectionTone) => (
-                      <ServiceDeliverables
-                        tone={tone}
-                        serviceTitle={service.title}
-                        items={page.deliverables ?? []}
-                      />
-                    ),
-                  },
-                {
-                  key: "steps",
-                  render: (tone: SectionTone) => (
-                    <ServiceSteps tone={tone} steps={page.steps ?? []} />
-                  ),
-                },
-                highlights,
-                page.platforms &&
-                  page.platforms.length > 0 && {
-                    key: "platforms",
-                    render: (tone: SectionTone) => (
-                      <ServicePlatforms tone={tone} platforms={page.platforms ?? []} />
-                    ),
-                  },
-                relatedProjects,
-              ]
-            : [
-                highlights,
-                relatedProjects,
-                {
-                  key: "process",
-                  render: (tone: SectionTone) => (
-                    <ProcessSection
-                      tone={tone}
+          products.length > 0 && {
+            key: "products",
+            render: (tone) => (
+              <Section tone={tone} labelledBy="products-title">
+                <SectionHeader
+                  id="products-title"
+                  eyebrow={productsLanding.eyebrow}
+                  title="Pick a product, *get a quote.*"
+                  intro="Every category below is printed or made in our own production house."
+                  className="mb-12 reveal"
+                />
+                <ProductGrid categories={products} headingLevel={3} />
+              </Section>
+            ),
+          },
+          page.highlights.length > 0 && {
+            key: "highlights",
+            render: (tone) => (
+              <BuiltToDeliver
+                tone={tone}
+                eyebrow="Why it matters"
+                title="Why work *with us.*"
+                reasons={page.highlights.map((highlight) => ({
+                  status: page.status,
+                  verified: page.verified,
+                  source: page.source,
+                  ...highlight,
+                }))}
+              />
+            ),
+          },
+          projects.length > 0 && {
+            key: "projects",
+            render: (tone) => (
+              <FeaturedProjects
+                tone={tone}
+                projects={projects}
+                title="Related projects"
+                {...(hasProjectsPage() ? { allProjectsHref: routes.projects } : {})}
+              />
+            ),
+          },
+          acts.length > 0 && {
+            key: "process",
+            fixedTone: "night",
+            render: (tone: SectionTone) => (
+              <Section tone={tone} spacing="none" container={false} labelledBy="run-of-show-title">
+                <RunOfShow
+                  acts={acts}
+                  highlight={HIGHLIGHTED_PROCESS_STEP}
+                  header={
+                    <SectionHeader
+                      id="run-of-show-title"
                       eyebrow="How we work"
-                      title="From brief to delivery"
-                      intro="Nine steps, from the first coffee to post-sale service."
-                      cta={{ label: "Start a Project", href: enquiryHref }}
+                      title={homeContent.runOfShow.title}
+                      intro={homeContent.runOfShow.intro}
+                      size="statement"
+                      inverse
                     />
-                  ),
-                },
-              ]),
+                  }
+                />
+              </Section>
+            ),
+          },
           faqs.length > 0 && {
             key: "faq",
             render: (tone) => (
@@ -233,7 +205,7 @@ export function ServicePage({ service, parent }: ServicePageProps) {
               <CtaBand
                 title={page.cta.title}
                 lead={page.cta.lead}
-                primary={{ label: "Start Your Project", href: enquiryHref }}
+                primary={{ label: ctaLabel, href: enquiryHref }}
                 {...(secondary ? { secondary } : {})}
               />
             ),

@@ -31,11 +31,11 @@ const base =
 
 const variants: Record<ButtonVariant, string> = {
   primary:
-    "btn-shine rounded-input bg-yellow-400 text-ink shadow-card hover:-translate-y-px hover:shadow-raised active:translate-y-px",
+    "btn-shine rounded-full bg-yellow-400 text-ink shadow-card hover:-translate-y-px hover:shadow-raised active:translate-y-px",
   secondary:
-    "rounded-input border-2 border-teal-600 text-teal-800 hover:bg-tint active:translate-y-px",
+    "rounded-full border-2 border-teal-800 text-teal-800 hover:bg-tint active:translate-y-px",
   inverse:
-    "rounded-input border border-white/40 bg-white/5 text-white backdrop-blur-sm hover:border-white hover:bg-white/12 active:translate-y-px",
+    "rounded-full border border-white/40 bg-white/5 text-white backdrop-blur-sm hover:border-white hover:bg-white/12 active:translate-y-px",
   quiet: "text-teal-800 underline-offset-4 hover:underline",
   quietInverse: "text-white underline-offset-4 hover:underline",
 };

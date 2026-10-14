@@ -14,7 +14,10 @@ export const brandColors = {
   teal200: "#81bec5",
   yellow400: "#ffc714",
   navy: "#151340",
-  surface: "#f4f8f9",
+  /** Deep teal-black "stage" behind dark sections, heroes and the browser chrome. */
+  night: "#0b1d23",
+  /** Warm ivory "programme paper" for light sections. */
+  surface: "#f4f0e8",
   muted: "#4a5f66",
   white: "#ffffff",
   danger: "#b42318",

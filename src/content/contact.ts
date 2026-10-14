@@ -4,8 +4,8 @@
  */
 export const contactContent = {
   eyebrow: "Contact",
-  title: "Start a project",
-  lead: "Events, exhibitions, branding, digital marketing, websites or AI — tell us what you have in mind and we’ll roll it out for you.",
+  title: "Tell us about *your event.*",
+  lead: "An event, an exhibition stand, or flags, signage and print for your brand — tell us what you have in mind and we’ll roll it out for you.",
   formTitle: "Send us your brief",
   formIntro: "Three quick steps. The more you tell us, the better our first conversation.",
   channelsTitle: "Talk to us",
@@ -26,6 +26,6 @@ export const contactContent = {
     /** Contains the brand, so it is used without the site suffix. */
     title: "Contact Viral Concepts – Start a Project",
     description:
-      "Tell us about your event, exhibition, campaign, website or AI project. Call, email or send a brief and our Dubai team will respond.",
+      "Tell us about your event, exhibition, activation or printing job. Call, email or send a brief and our Dubai team will respond.",
   },
 } as const;

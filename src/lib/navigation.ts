@@ -1,8 +1,9 @@
 import "server-only";
 
-import { CAPABILITY_META, CAPABILITY_ORDER } from "@/components/sections/home/DigitalBand";
+import { productCategories } from "@/content/products";
 import {
   getPillarsWithServices,
+  getVisible,
   getServiceHref,
   hasServicePage,
   getServices,
@@ -11,7 +12,7 @@ import {
   isPageVisible,
 } from "@/lib/content";
 import { reviewLabel } from "@/lib/publishing";
-import { routes } from "@/lib/routes";
+import { contactRouteForService, routes } from "@/lib/routes";
 import type { Service } from "@/types/content";
 import type { FooterColumn, NavItem, NavigationModel, NavLink } from "@/types/navigation";
 
@@ -20,7 +21,7 @@ import type { FooterColumn, NavItem, NavigationModel, NavLink } from "@/types/na
  * exist in this deployment. Header, mobile menu and footer all render this one model.
  */
 
-export const PRIMARY_CTA: NavLink = { label: "Start a Project", href: routes.contact };
+export const PRIMARY_CTA: NavLink = { label: "Plan your event", href: routes.contact };
 
 function serviceLink(service: Service, withDescription: boolean): NavLink {
   // Flag a live service whose page copy is still a draft (visible in preview only).
@@ -58,10 +59,12 @@ function asNavItem(link: NavLink): NavItem {
 }
 
 export function getNavigation(): NavigationModel {
-  const servicePillars = getPillarsWithServices().filter((p) => p.id !== "digital-technology");
-  const digital = getServices("digital-solutions");
   const services = getServices("services");
   const optional = optionalPageLinks();
+  const print = services.find((service) => service.slug === "branding-printing");
+  const eventServices = services.filter((service) => service.slug !== "branding-printing");
+  const eventPillar = getPillarsWithServices().find((pillar) => pillar.id === "events-experiences");
+  const products = getVisible(productCategories);
   const company = [
     optional.about,
     optional.projects,
@@ -70,61 +73,81 @@ export function getNavigation(): NavigationModel {
     CONTACT,
   ].filter(present);
 
-  const servicesMenu: NavItem = {
+  // Two ways into the business: plan an event, or order branding & print.
+  const eventsMenu: NavItem = {
     kind: "menu",
     id: "services",
-    label: "Services",
+    label: "Events",
     layout: "mega",
     overview: {
-      label: "All services",
+      label: "Events & exhibitions",
       href: routes.services,
-      description: "Six service lines delivered from our Dubai production house.",
+      description:
+        "Corporate events, conferences, exhibitions, activations and décor — produced in our own Dubai production house.",
     },
-    sections: servicePillars.map((pillar) => ({
-      title: pillar.title,
-      links: pillar.services.map((service) => serviceLink(service, true)),
-    })),
+    sections: [
+      {
+        title: eventPillar?.title ?? "Events & Experiences",
+        links: (eventPillar?.services ?? []).map((service) => serviceLink(service, true)),
+      },
+      {
+        title: "Activations",
+        links: eventServices
+          .filter((service) => !eventPillar?.services.some((s) => s.slug === service.slug))
+          .map((service) => serviceLink(service, true)),
+      },
+    ].filter((section) => section.links.length > 0),
   };
 
-  // Digital services grouped like an agency menu: marketing · web & apps · AI & automation.
-  const digitalSections = CAPABILITY_ORDER.map((capability) => ({
-    title: CAPABILITY_META[capability].title,
-    links: digital.filter((s) => s.capability === capability).map((s) => serviceLink(s, false)),
-  })).filter((section) => section.links.length > 0);
-
-  const digitalMenu: NavItem = {
-    kind: "menu",
-    id: "digital-solutions",
-    label: "Digital Solutions",
-    layout: digitalSections.length > 1 ? "mega" : "list",
-    overview: {
-      label: "Digital Solutions overview",
-      href: routes.digitalSolutions,
-      description: "Digital marketing, websites and apps, and AI & automation.",
-    },
-    sections: digitalSections,
-  };
+  const printMenu: NavItem | undefined = print
+    ? {
+        kind: "menu",
+        id: "branding-print",
+        label: "Branding & Print",
+        layout: "mega",
+        cta: { label: "Request a quote", href: contactRouteForService("branding-printing") },
+        overview: {
+          label: "All branding & print",
+          href: routes.products,
+          description:
+            "Flags, banners, signage, large format, fabric, vehicle branding, print and gifts — made in-house.",
+        },
+        sections: [
+          {
+            title: "Products",
+            links: products.map((category) => ({
+              label: category.title,
+              href: `${routes.products}#${category.id}`,
+            })),
+          },
+          { title: "Service", links: [serviceLink(print, true)] },
+        ],
+      }
+    : undefined;
 
   // Explicit display order. Optional items drop out when their page does not exist.
   const primary: NavItem[] = [
-    optional.about && asNavItem(optional.about),
-    servicesMenu,
-    digital.length > 0 ? digitalMenu : undefined,
+    eventsMenu,
+    printMenu,
     optional.projects && asNavItem(optional.projects),
+    optional.about && asNavItem(optional.about),
     optional.industries && asNavItem(optional.industries),
     optional.companyProfile && asNavItem(optional.companyProfile),
     asNavItem(CONTACT),
   ].filter(present);
 
   const footerColumns: FooterColumn[] = [
-    { title: "Services", links: services.map((s) => serviceLink(s, false)) },
-    ...(digital.length > 0
+    { title: "Events", links: eventServices.map((s) => serviceLink(s, false)) },
+    ...(print
       ? [
           {
-            title: "Digital Solutions",
+            title: "Branding & Print",
             links: [
-              { label: "Overview", href: routes.digitalSolutions },
-              ...digital.map((s) => serviceLink(s, false)),
+              { label: "All products", href: routes.products },
+              ...products.map((category) => ({
+                label: category.title,
+                href: `${routes.products}#${category.id}`,
+              })),
             ],
           },
         ]

@@ -18,7 +18,7 @@ export interface Statement extends Governed {
 export const aboutContent = {
   hero: {
     eyebrow: "About Viral Concepts",
-    title: "Your one-stop events and branding partner since 2014",
+    title: "Your events and branding partner *since 2014.*",
     /** CP p.3, p.16. */
     lead: "From Viral Concepts Advertising LLC in 2014 to a one-stop shop for events and branding, with our own production house in Dubai.",
   },

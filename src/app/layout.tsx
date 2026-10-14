@@ -1,6 +1,7 @@
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
+import { ViewTransition } from "react";
 
 import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
@@ -19,8 +20,10 @@ import { organizationJsonLd, websiteJsonLd } from "@/lib/structured-data";
 import "./globals.css";
 
 /*
- * Self-hosted variable fonts (SIL OFL, licences in src/assets/fonts). One latin file per family
- * covers every weight, and builds never depend on a third-party font CDN.
+ * Self-hosted fonts (SIL OFL, licences in src/assets/fonts); builds never depend on a font CDN.
+ * - Archivo (variable weight + width): condensed poster headlines, expanded labels.
+ * - Instrument Serif (roman + italic): the editorial accent words in headlines.
+ * - Inter (variable): body copy and UI.
  */
 const inter = localFont({
   src: "../assets/fonts/inter-latin-variable.woff2",
@@ -28,11 +31,25 @@ const inter = localFont({
   display: "swap",
   variable: "--font-inter",
 });
-const outfit = localFont({
-  src: "../assets/fonts/outfit-latin-variable.woff2",
+const archivo = localFont({
+  src: "../assets/fonts/archivo-latin-variable.woff2",
   weight: "100 900",
+  style: "normal",
   display: "swap",
-  variable: "--font-outfit",
+  variable: "--font-archivo",
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
+});
+const instrumentSerif = localFont({
+  src: [
+    { path: "../assets/fonts/instrument-serif-latin-400.woff2", weight: "400", style: "normal" },
+    {
+      path: "../assets/fonts/instrument-serif-latin-400-italic.woff2",
+      weight: "400",
+      style: "italic",
+    },
+  ],
+  display: "swap",
+  variable: "--font-instrument-serif",
 });
 
 export const metadata: Metadata = {
@@ -56,7 +73,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: brandColors.teal800,
+  themeColor: brandColors.night,
   colorScheme: "light",
   // Lets env(safe-area-inset-*) work so the mobile action bar clears the iOS home indicator.
   viewportFit: "cover",
@@ -66,7 +83,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   const isPreview = getContentMode() === "preview";
 
   return (
-    <html lang="en" dir="ltr" className={`${inter.variable} ${outfit.variable}`}>
+    <html
+      lang="en"
+      dir="ltr"
+      className={`${inter.variable} ${archivo.variable} ${instrumentSerif.variable}`}
+    >
       <body className="flex min-h-dvh flex-col pb-action-bar antialiased md:pb-0">
         <a
           href="#main-content"
@@ -77,7 +98,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         {isPreview ? <PreviewBanner /> : null}
         <Header />
         <main id="main-content" tabIndex={-1} className="flex-1 focus:outline-none">
-          {children}
+          {/* Pages cross-fade on navigation (View Transitions; instant where unsupported). */}
+          <ViewTransition>{children}</ViewTransition>
         </main>
         <Footer />
         <MobileActionBar />

@@ -46,8 +46,8 @@ export function NavPanel({ item, cta }: { readonly item: MenuItem; readonly cta:
         {item.overview.description ? (
           <p className="text-muted">{item.overview.description}</p>
         ) : null}
-        <ButtonLink href={cta.href} className="mt-auto self-start" icon="arrow-right">
-          {cta.label}
+        <ButtonLink href={(item.cta ?? cta).href} className="mt-auto self-start" icon="arrow-right">
+          {(item.cta ?? cta).label}
         </ButtonLink>
       </div>
       <div

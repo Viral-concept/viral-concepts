@@ -39,6 +39,8 @@ const paths = {
   bolt: "M13 3 5 14h6l-1 7 8-11h-6l1-7Z",
   send: "M4 12 20 4l-6 16-3-7-7-1Z",
   calendar: "M4 6h16v14H4zM4 10h16M8 3v4M16 3v4",
+  play: "M8 5.5v13l10.5-6.5L8 5.5Z",
+  pause: "M8.5 5.5v13M15.5 5.5v13",
 } as const;
 
 export type IconName = keyof typeof paths;

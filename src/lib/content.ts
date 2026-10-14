@@ -2,7 +2,6 @@ import "server-only";
 
 import { contentMode } from "@/config/env.server";
 import { companyProfileDownload } from "@/content/company-profile";
-import { digitalServices } from "@/content/digital-services";
 import { faqs } from "@/content/faqs";
 import { industries } from "@/content/industries";
 import { type PageKey, pages } from "@/content/pages";
@@ -48,7 +47,7 @@ export function getContentMode(): ContentMode {
 }
 
 // Widen the `as const` content to the model types at the boundary.
-const allServices: readonly Service[] = [...services, ...digitalServices];
+const allServices: readonly Service[] = services;
 const allProjects: readonly Project[] = projects;
 const allIndustries: readonly Industry[] = industries;
 const allFaqs: readonly Faq[] = faqs;
@@ -82,13 +81,12 @@ export function hasServicePage(service: Service): boolean {
 
 const verticalLanding = {
   services: routes.services,
-  "digital-solutions": routes.digitalSolutions,
 } as const satisfies Record<ServiceVertical, string>;
 
 /**
  * Where a link to a service goes. Every service link on the site (menus, footer, cards) is built
  * here: the service's own page when it exists, otherwise the service's entry on its vertical's
- * landing page (`/digital-solutions#seo`). A link can therefore never point at a missing page.
+ * landing page (`/services#exhibitions`). A link can therefore never point at a missing page.
  */
 export function getServiceHref(service: Service): string {
   return hasPage(service)

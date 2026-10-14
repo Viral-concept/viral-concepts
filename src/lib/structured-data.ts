@@ -122,7 +122,7 @@ export function serviceJsonLd(service: Service): JsonLdObject {
     description: service.seo.description,
     url: url(serviceRoute(service)),
     provider: { "@id": ORGANIZATION_ID },
-    // CP p.35 for the service lines; CP p.23 says digital work is for "clients across the gulf".
+    // CP p.35 for the service lines;
     areaServed: service.vertical === "services" ? countries() : "Gulf",
     ...(service.offerings.length > 0
       ? {

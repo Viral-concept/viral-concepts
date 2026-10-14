@@ -3,7 +3,8 @@ import path from "node:path";
 
 import { describe, expect, it } from "vitest";
 
-import { digitalServices } from "@/content/digital-services";
+import { eventPhotos } from "@/content/event-photos";
+import { experiences } from "@/content/experiences";
 import { faqs } from "@/content/faqs";
 import { homeContent } from "@/content/home";
 import { industries } from "@/content/industries";
@@ -24,7 +25,7 @@ import type { Faq, Governed, Industry, Project, Service, Stat } from "@/types/co
 
 const PUBLIC_DIR = path.resolve(import.meta.dirname, "../public");
 const INTERIM_DIR = path.resolve(import.meta.dirname, "../src/assets/interim");
-const allServices: readonly Service[] = [...services, ...digitalServices];
+const allServices: readonly Service[] = [...services];
 const allProjects: readonly Project[] = projects;
 const allIndustries: readonly Industry[] = industries;
 const allFaqs: readonly Faq[] = faqs;
@@ -198,9 +199,21 @@ describe("SEO fields", () => {
 describe("homepage content", () => {
   const serviceSlugs = new Set(allServices.map((s) => s.slug));
 
-  it("featured offerings link to existing service pages", () => {
-    for (const offering of homeContent.featuredOfferings) {
-      expect(serviceSlugs.has(offering.serviceSlug), offering.id).toBe(true);
+  it("experiences link to existing service pages", () => {
+    for (const experience of experiences) {
+      expect(serviceSlugs.has(experience.serviceSlug), experience.id).toBe(true);
+    }
+  });
+
+  it("event stock photos are licensed Pexels images, never presented as project proof", () => {
+    for (const photo of Object.values(eventPhotos)) {
+      expect(photo.kind, photo.src).toBe("stock-photo");
+      expect(photo.source.kind, photo.src).toBe("stock-photo");
+      expect(photo.alt.trim().length, photo.src).toBeGreaterThan(0);
+    }
+    const galleries = projects.flatMap((p) => p.gallery.map((image) => image.src));
+    for (const photo of Object.values(eventPhotos)) {
+      expect(galleries, photo.src).not.toContain(photo.src);
     }
   });
 
@@ -211,8 +224,8 @@ describe("homepage content", () => {
     }
   });
 
-  it("offerings and reasons cite the Company Profile", () => {
-    for (const item of [...homeContent.featuredOfferings, ...homeContent.reasons]) {
+  it("reasons cite the Company Profile", () => {
+    for (const item of homeContent.reasons) {
       expect(item.source.kind, item.id).toBe("company-profile");
     }
   });

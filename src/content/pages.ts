@@ -7,7 +7,7 @@ import { companyProfile, proposed } from "./sources";
  *
  * Navigation, the footer, the sitemap and the page routes themselves all consult this registry
  * (through `isPageVisible` in src/lib/content.ts), so a page can never be linked while it is
- * missing its content. Core pages (home, services, digital solutions, contact) always exist and
+ * missing its content. Core pages (home, services, products, contact) always exist and
  * are not listed. Projects and Industries are derived from their collections instead.
  */
 export const pages = {

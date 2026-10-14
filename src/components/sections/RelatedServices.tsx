@@ -1,6 +1,7 @@
 import { ServiceCard } from "@/components/cards/ServiceCard";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { getVisibleImage } from "@/lib/content";
 import type { Service } from "@/types/content";
 import type { SectionTone } from "@/types/ui";
 
@@ -22,7 +23,7 @@ export function RelatedServices({
       <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => (
           <li key={service.slug} className="reveal">
-            <ServiceCard service={service} />
+            <ServiceCard service={service} image={getVisibleImage(service.heroImage)} />
           </li>
         ))}
       </ul>

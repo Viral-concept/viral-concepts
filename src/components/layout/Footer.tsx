@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { AppLink } from "@/components/ui/AppLink";
+import { ButtonLink } from "@/components/ui/Button";
 import { TricolourBar } from "@/components/ui/BrandMotifs";
 import { Container } from "@/components/ui/Container";
 import { Icon, type IconName } from "@/components/ui/Icon";
@@ -66,15 +67,23 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer
-      data-tone="dark"
-      className="relative isolate overflow-hidden bg-ink bg-hex-grid-dark text-white/80"
-    >
+    <footer data-tone="dark" className="relative isolate overflow-hidden bg-stage text-white/80">
       {/* A soft light behind the columns, in the brand's cyan. Decorative. */}
       <span
         aria-hidden="true"
-        className="absolute -top-40 left-1/2 -z-10 size-[36rem] -translate-x-1/2 rounded-full opacity-50 glow-teal"
+        className="absolute -top-40 left-1/2 -z-10 size-[36rem] -translate-x-1/2 rounded-full opacity-40 glow-teal"
       />
+      {/* Opening line: one more invitation before the links. */}
+      <Container className="flex flex-col gap-6 border-b border-white/12 pt-20 pb-14 md:flex-row md:items-end md:justify-between lg:pt-24">
+        <p className="max-w-3xl font-display text-[clamp(2.25rem,1.2rem+4vw,4.5rem)] leading-[0.92] font-extrabold text-white uppercase [font-stretch:72%]">
+          Have an event <em className="accent text-yellow-400">in mind?</em>
+        </p>
+        <div className="shrink-0">
+          <ButtonLink href={navigation.cta.href} size="lg" icon="arrow-right">
+            {navigation.cta.label}
+          </ButtonLink>
+        </div>
+      </Container>
       <Container className="grid gap-12 py-16 lg:grid-cols-12 lg:gap-8 lg:py-20">
         <div className="flex flex-col gap-5 lg:col-span-4">
           <Link href={routes.home} aria-label="Viral Concepts — home" className="self-start">
@@ -108,7 +117,7 @@ export function Footer() {
         >
           {navigation.footerColumns.map((column) => (
             <div key={column.title} className="flex flex-col gap-4">
-              <h2 className="font-sans text-eyebrow text-cyan-300 uppercase">{column.title}</h2>
+              <h2 className="text-eyebrow text-yellow-400 uppercase">{column.title}</h2>
               <ul className="flex flex-col gap-1">
                 {column.links.map((link) => (
                   <li key={link.href}>
@@ -126,7 +135,7 @@ export function Footer() {
         </nav>
 
         <div className="flex flex-col gap-4 lg:col-span-3">
-          <h2 className="font-sans text-eyebrow text-cyan-300 uppercase">Contact</h2>
+          <h2 className="text-eyebrow text-yellow-400 uppercase">Contact</h2>
           <ul className="flex flex-col gap-1 text-sm">
             {phone ? (
               <ContactLine icon="phone" href={`tel:${phone.value.e164}`}>

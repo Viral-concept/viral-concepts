@@ -168,7 +168,7 @@ describe("emails", () => {
     });
     expect(email.replyTo).toBe("aisha@gulfexpo.ae");
     expect(email.subject).toBe("New enquiry: Exhibitions — Aisha Rahman");
-    expect(email.text).toContain("Event or launch date: 20 November 2026");
+    expect(email.text).toContain("Event date or deadline: 20 November 2026");
     expect(email.text).toContain("2 Oct 2026, 12:00"); // Dubai time
     expect(email.text).toContain(lead.message);
   });

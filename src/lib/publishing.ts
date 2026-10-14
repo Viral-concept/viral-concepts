@@ -36,7 +36,7 @@ export function isVisible(item: Governed, mode: ContentMode): boolean {
 
 /**
  * A service has its own page only when the service and its page copy are both visible.
- * Every link to /services/[slug] or /digital-solutions/[slug] is built on this rule.
+ * Every link to /services/[slug] is built on this rule.
  */
 export function isServicePageVisible(
   service: Governed & { readonly page?: Governed },

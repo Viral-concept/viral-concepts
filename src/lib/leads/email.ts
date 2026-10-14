@@ -55,7 +55,7 @@ function rows(lead: Lead, serviceLabel: string): [label: string, value: string][
     ["Phone", lead.phone ?? "—"],
     ["Service", serviceLabel],
     ["Budget", lead.budget ? budgetLabel(lead.budget) : "—"],
-    ["Event or launch date", lead.eventDate ? formatEventDate(lead.eventDate) : "—"],
+    ["Event date or deadline", lead.eventDate ? formatEventDate(lead.eventDate) : "—"],
   ];
 }
 

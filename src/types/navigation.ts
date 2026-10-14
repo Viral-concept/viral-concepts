@@ -25,6 +25,8 @@ export type NavItem =
       /** Landing page for the group, shown as the first link in the panel. */
       readonly overview: NavLink;
       readonly sections: readonly NavSection[];
+      /** The panel's own call to action (defaults to the site-wide one). */
+      readonly cta?: NavLink;
       /** mega: multi-column panel spanning the header; list: compact single column. */
       readonly layout: "mega" | "list";
     };
