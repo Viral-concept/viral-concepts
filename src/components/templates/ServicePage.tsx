@@ -1,5 +1,9 @@
 import { CtaBand } from "@/components/sections/CtaBand";
-import { EventOfferings, ServiceStory } from "@/components/sections/EventServiceSections";
+import {
+  EventOfferings,
+  ServiceGallery,
+  ServiceStory,
+} from "@/components/sections/EventServiceSections";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { FeaturedProjects } from "@/components/sections/FeaturedProjects";
 import { BuiltToDeliver } from "@/components/sections/home/BuiltToDeliver";
@@ -13,14 +17,16 @@ import { ButtonLink } from "@/components/ui/Button";
 import { Section } from "@/components/ui/Section";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import { homeContent } from "@/content/home";
+import { pillars } from "@/content/pillars";
 import { HIGHLIGHTED_PROCESS_STEP } from "@/content/process";
 import { productCategories, productsLanding } from "@/content/products";
-import { serviceScenes } from "@/content/service-scenes";
 import {
   getContactChannels,
   getFaqs,
   getProjectsForService,
   getRelatedServices,
+  getServiceGallery,
+  getServiceScenes,
   getVisible,
   getVisibleImage,
   hasProjectsPage,
@@ -49,7 +55,8 @@ interface ServicePageProps {
 
 export function ServicePage({ service, parent }: ServicePageProps) {
   const { page } = service;
-  const isPrint = service.slug === "branding-printing";
+  const isPrint = service.pillar === "branding-advertising";
+  const isCatalogue = service.slug === "branding-printing";
   const heroImage = getVisibleImage(service.heroImage);
   const projects = getProjectsForService(service.slug).slice(0, 3);
   const faqs = getFaqs(`service:${service.slug}`);
@@ -59,9 +66,10 @@ export function ServicePage({ service, parent }: ServicePageProps) {
   const enquiryHref = contactRouteForService(service.slug);
   const ctaLabel = isPrint ? "Request a quote" : "Plan your event";
   const offeringCount = service.offerings.reduce((sum, group) => sum + group.items.length, 0);
-  const scenes = (serviceScenes[service.slug] ?? []).map(getVisibleImage).filter(present);
+  const scenes = getServiceScenes(service).slice(0, 3);
+  const gallery = getServiceGallery(service);
   const credits = service.offerings.flatMap((group) => group.items).slice(0, 5);
-  const products = isPrint ? getVisible(productCategories) : [];
+  const products = isCatalogue ? getVisible(productCategories) : [];
   const acts = homeContent.runOfShow.acts
     .map((act) => {
       const image = getVisibleImage(act.image);
@@ -78,7 +86,7 @@ export function ServicePage({ service, parent }: ServicePageProps) {
           parent,
           { label: service.title, href: serviceRoute(service) },
         ]}
-        eyebrow={isPrint ? "Branding & print" : parent.label}
+        eyebrow={pillars.find((pillar) => pillar.id === service.pillar)?.title ?? parent.label}
         title={service.seo.h1 ?? service.title}
         lead={service.summary}
         reviewItem={needsReviewBanner(service) ? service : page}
@@ -98,6 +106,9 @@ export function ServicePage({ service, parent }: ServicePageProps) {
                 {phone.value.display}
               </ButtonLink>
             ) : null}
+            <ButtonLink href={routes.services} variant="quietInverse" className="self-center">
+              All services
+            </ButtonLink>
           </>
         }
       />
@@ -122,6 +133,12 @@ export function ServicePage({ service, parent }: ServicePageProps) {
             fixedTone: "night",
             render: (tone) => (
               <EventOfferings tone={tone} serviceTitle={service.title} groups={service.offerings} />
+            ),
+          },
+          gallery.length > 0 && {
+            key: "gallery",
+            render: (tone) => (
+              <ServiceGallery tone={tone} serviceTitle={service.title} images={gallery} />
             ),
           },
           products.length > 0 && {

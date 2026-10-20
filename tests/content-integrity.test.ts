@@ -172,6 +172,15 @@ describe("publishing safety", () => {
     }
   });
 
+  it("every client work photo exists in public/ with alt text", async () => {
+    const { workPhotos } = await import("@/content/work-photos");
+    for (const image of Object.values(workPhotos)) {
+      expect(existsSync(path.join(PUBLIC_DIR, image.src)), image.src).toBe(true);
+      expect(image.alt.trim().length, image.src).toBeGreaterThan(10);
+      expect(isPublishable(image), image.src).toBe(true);
+    }
+  });
+
   it("every image has alt text and intrinsic dimensions", () => {
     const images = [
       ...Object.values(media),

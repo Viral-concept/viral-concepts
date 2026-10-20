@@ -82,8 +82,19 @@ export const site = {
       source: companyProfile(35),
     } satisfies Fact<{ readonly display: string; readonly e164: string }>,
 
-    /** No WhatsApp number has been confirmed (checklist #2). The WhatsApp CTA stays hidden. */
-    whatsapp: null as Fact<{ readonly display: string; readonly e164: string }> | null,
+    /**
+     * WhatsApp chat number for the floating button and "WhatsApp us" actions. This is the
+     * company's main number from the Company Profile (CP p.35), reused as the client asked.
+     * To change it, edit `display` and `e164` here (international format, e.g. +971…); set the
+     * whole value to `null` to hide every WhatsApp link. Confirm WhatsApp Business is active on
+     * this number (checklist #2) — CP p.14 also prints 058 664 1020.
+     */
+    whatsapp: {
+      value: { display: "+971 58 854 7620", e164: "+971588547620" },
+      status: "live",
+      verified: true,
+      source: companyProfile(35),
+    } as Fact<{ readonly display: string; readonly e164: string }> | null,
 
     /** CP p.35. Personal addresses from the template are not used (checklist #3). */
     email: {

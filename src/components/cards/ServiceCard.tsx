@@ -25,7 +25,7 @@ interface ServiceCardProps {
   readonly service: Service;
   /** Number of offering highlights to list (0 to hide). */
   readonly highlights?: number;
-  readonly headingLevel?: 2 | 3;
+  readonly headingLevel?: 2 | 3 | 4;
   /** Defaults to the service's link target; `null` renders an unlinked card. */
   readonly href?: string | null;
   readonly id?: string;

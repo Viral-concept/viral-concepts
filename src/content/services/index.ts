@@ -1,23 +1,44 @@
 import type { Service } from "@/types/content";
 
+import { advertisingPr } from "./advertising-pr";
+import { brandingPrinting } from "./branding-printing";
 import { eventProductionFabrication } from "./event-production-fabrication";
 import { eventRentalsEntertainment } from "./event-rentals-entertainment";
 import { exhibitions } from "./exhibitions";
 import { festiveMallDecor } from "./festive-mall-decor";
-import { brandingPrinting } from "./branding-printing";
-import { advertisingPr } from "./advertising-pr";
+import { corporateGifts, fabricPrinting, flags, printSolutions, signage } from "./print";
+import {
+  furnitureRental,
+  herasFenceRental,
+  mojoBarrierRental,
+  policeBarrierRental,
+  tentRental,
+} from "./rentals";
 
 /**
- * The six service lines from the Company Profile "Our Services" page (CP p.6), one file each.
+ * Every service, one entry each: the six service lines from the Company Profile "Our Services"
+ * page (CP p.6) plus the dedicated rental and branding & print pages the client asked for.
  * Every offering is listed in the CP on the cited pages; CP spelling errors are corrected.
- * SEO fields follow the candidate keyword map (Discovery doc, section J) — volumes to be validated.
- * Order here is the display order.
+ * Order here is the display order within each group (see content/pillars.ts).
  */
 export const services = [
+  // Events & production
   eventProductionFabrication,
-  eventRentalsEntertainment,
   exhibitions,
   festiveMallDecor,
-  brandingPrinting,
   advertisingPr,
+  // Event rentals
+  eventRentalsEntertainment,
+  furnitureRental,
+  tentRental,
+  herasFenceRental,
+  policeBarrierRental,
+  mojoBarrierRental,
+  // Branding & print
+  brandingPrinting,
+  flags,
+  fabricPrinting,
+  printSolutions,
+  signage,
+  corporateGifts,
 ] as const satisfies readonly Service[];

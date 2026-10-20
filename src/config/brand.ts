@@ -21,4 +21,6 @@ export const brandColors = {
   muted: "#4a5f66",
   white: "#ffffff",
   danger: "#b42318",
+  /** WhatsApp brand green, used only for the floating chat button. */
+  whatsapp: "#25d366",
 } as const;

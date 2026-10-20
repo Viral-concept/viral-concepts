@@ -102,7 +102,7 @@ export interface SeoFields {
 /* Services                                                                    */
 /* -------------------------------------------------------------------------- */
 
-export type PillarId = "events-experiences" | "branding-advertising";
+export type PillarId = "events-experiences" | "event-rentals" | "branding-advertising";
 
 export interface Pillar {
   readonly id: PillarId;

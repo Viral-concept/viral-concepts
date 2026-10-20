@@ -62,7 +62,7 @@ export interface LeadFormProps {
 }
 
 const DIVISIONS = [
-  { id: "events", label: "Events & Exhibitions", group: "Events", icon: "spark" },
+  { id: "events", label: "Events & Rentals", group: "Events", icon: "spark" },
   { id: "print", label: "Branding & Print", group: "Branding & Print", icon: "expand" },
 ] as const satisfies readonly {
   id: string;

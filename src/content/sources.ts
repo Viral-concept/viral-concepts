@@ -29,3 +29,10 @@ export function proposed(note?: string): ContentSource {
 export function template(note?: string): ContentSource {
   return note === undefined ? { kind: "template" } : { kind: "template", note };
 }
+
+/** Supplied or confirmed by the client for publication on the given date. */
+export function clientSupplied(confirmedOn: IsoDate, note?: string): ContentSource {
+  return note === undefined
+    ? { kind: "client-confirmed", confirmedOn }
+    : { kind: "client-confirmed", confirmedOn, note };
+}

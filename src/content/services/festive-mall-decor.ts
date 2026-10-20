@@ -1,6 +1,6 @@
 import type { Service } from "@/types/content";
 
-import { eventPhotos } from "../event-photos";
+import { workPhotos } from "../work-photos";
 import { companyProfile } from "../sources";
 
 /** Page copy restates CP p.3, 16, 21, 24. Hero photo: licensed stock that sets the scene (content/event-photos.ts). */
@@ -45,7 +45,7 @@ export const festiveMallDecor = {
   status: "live",
   verified: true,
   source: companyProfile(21, 24),
-  heroImage: eventPhotos.ramadanLanterns,
+  heroImage: workPhotos.showroomNationalDay,
   page: {
     status: "live",
     verified: true,

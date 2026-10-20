@@ -2,6 +2,7 @@ import type { Governed, ImageAsset } from "@/types/content";
 
 import { eventPhotos } from "./event-photos";
 import { companyProfile } from "./sources";
+import { workPhotos } from "./work-photos";
 
 /**
  * The branding & print catalogue: everything the production house prints and makes, grouped
@@ -18,6 +19,8 @@ export interface ProductCategory extends Governed {
   readonly summary: string;
   readonly items: readonly string[];
   readonly image: ImageAsset;
+  /** The service page that covers this category (and the enquiry option it pre-selects). */
+  readonly serviceSlug: string;
 }
 
 export const productCategories = [
@@ -37,7 +40,8 @@ export const productCategories = [
       "Festive flags",
       "Flag poles",
     ],
-    image: eventPhotos.flagsSky,
+    image: workPhotos.featherFlags,
+    serviceSlug: "flags",
     status: "live",
     verified: true,
     source: companyProfile(5, 11),
@@ -56,6 +60,7 @@ export const productCategories = [
       "Barrier banners",
     ],
     image: eventPhotos.blankBanner,
+    serviceSlug: "print-solutions",
     status: "live",
     verified: true,
     source: companyProfile(5, 8, 12, 13),
@@ -74,6 +79,7 @@ export const productCategories = [
       "Kiosks",
     ],
     image: eventPhotos.printRolls,
+    serviceSlug: "print-solutions",
     status: "live",
     verified: true,
     source: companyProfile(5, 12, 17, 26),
@@ -89,7 +95,8 @@ export const productCategories = [
       "Directional signage",
       "Signboards",
     ],
-    image: eventPhotos.neonSign,
+    image: workPhotos.lightBoxEntrance,
+    serviceSlug: "signage",
     status: "live",
     verified: true,
     source: companyProfile(5, 15),
@@ -109,6 +116,7 @@ export const productCategories = [
       "Cut-outs",
     ],
     image: eventPhotos.fabricPrinter,
+    serviceSlug: "print-solutions",
     status: "live",
     verified: true,
     source: companyProfile(5, 7, 9),
@@ -125,7 +133,8 @@ export const productCategories = [
       "Canvas printing",
       "Fabric printing",
     ],
-    image: eventPhotos.fabricRolls,
+    image: workPhotos.fenceCoversWhite,
+    serviceSlug: "fabric-printing",
     status: "live",
     verified: true,
     source: companyProfile(7, 8),
@@ -136,6 +145,7 @@ export const productCategories = [
     summary: "Car wrapping and vehicle graphics that keep your brand moving around the city.",
     items: ["Car wrapping", "Vehicle branding", "Advertising graphics"],
     image: eventPhotos.carWrap,
+    serviceSlug: "print-solutions",
     status: "live",
     verified: true,
     source: companyProfile(5, 7, 14),
@@ -154,6 +164,7 @@ export const productCategories = [
       "Offset & digital printing",
     ],
     image: eventPhotos.printedStacks,
+    serviceSlug: "print-solutions",
     status: "live",
     verified: true,
     source: companyProfile(5, 7),
@@ -171,17 +182,13 @@ export const productCategories = [
       "Heat transfer & sublimation",
       "Promotional gifts & giveaways",
     ],
-    image: eventPhotos.screenPrinting,
+    image: workPhotos.giftSetBlue,
+    serviceSlug: "corporate-gifts",
     status: "live",
     verified: true,
     source: companyProfile(7, 8, 10),
   },
 ] as const satisfies readonly ProductCategory[];
-
-/** Enquiry-form value for a product category (validated server side like any service). */
-export function productOptionValue(id: string): string {
-  return `print:${id}`;
-}
 
 export const productsLanding = {
   eyebrow: "Branding & print",

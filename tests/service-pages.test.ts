@@ -74,10 +74,32 @@ describe("service page content", () => {
     expect(new Set(descriptions).size).toBe(descriptions.length);
   });
 
-  it("every event service page has a licensed hero photo", () => {
+  it("every service page has photos: a hero photo or its own scenes", async () => {
+    const { serviceScenes } = await import("@/content/service-scenes");
     for (const service of services) {
-      expect(service.heroImage?.kind, service.slug).toBe("stock-photo");
-      expect(service.heroImage?.alt.length ?? 0, service.slug).toBeGreaterThan(10);
+      const hero = "heroImage" in service ? service.heroImage : undefined;
+      const scenes = serviceScenes[service.slug] ?? [];
+      expect(hero !== undefined || scenes.length > 0, service.slug).toBe(true);
+      for (const image of [...(hero ? [hero] : []), ...scenes]) {
+        expect(["stock-photo", "project-photo"], image.src).toContain(image.kind);
+        expect(image.alt.length, image.src).toBeGreaterThan(10);
+      }
+    }
+  });
+
+  it("includes every service the client asked for, each with its own page", () => {
+    const slugs = new Set<string>(services.map((s) => s.slug));
+    for (const slug of [
+      "furniture-rental",
+      "tent-rental",
+      "heras-fence-rental",
+      "police-barrier-rental",
+      "mojo-barrier-rental",
+      "flags",
+      "fabric-printing",
+      "print-solutions",
+    ]) {
+      expect(slugs.has(slug), slug).toBe(true);
     }
   });
 
@@ -85,7 +107,11 @@ describe("service page content", () => {
     for (const category of productCategories) {
       expect(category.source.kind, category.id).toBe("company-profile");
       expect(category.items.length, category.id).toBeGreaterThanOrEqual(3);
-      expect(category.image.kind, category.id).toBe("stock-photo");
+      expect(["stock-photo", "project-photo"], category.id).toContain(category.image.kind);
+      expect(
+        services.some((s) => s.slug === category.serviceSlug),
+        category.id,
+      ).toBe(true);
     }
   });
 });

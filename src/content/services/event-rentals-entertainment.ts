@@ -1,13 +1,13 @@
 import type { Service } from "@/types/content";
 
-import { eventPhotos } from "../event-photos";
+import { workPhotos } from "../work-photos";
 import { companyProfile } from "../sources";
 
 /** Page copy restates CP p.17, 18, 19, 20. Hero photo: licensed stock that sets the scene (content/event-photos.ts). */
 export const eventRentalsEntertainment = {
   slug: "event-rentals-entertainment",
   vertical: "services",
-  pillar: "events-experiences",
+  pillar: "event-rentals",
   title: "Event Rentals & Entertainment",
   summary:
     "Tents, stages, AV, furniture, barriers, inflatables, climate control and event staff, supplied for your event.",
@@ -49,7 +49,7 @@ export const eventRentalsEntertainment = {
       ],
     },
   ],
-  relatedServiceSlugs: ["event-production-fabrication", "exhibitions", "festive-mall-decor"],
+  relatedServiceSlugs: ["furniture-rental", "tent-rental", "police-barrier-rental"],
   seo: {
     title: "Event Rentals, AV & Event Staff in Dubai",
     description:
@@ -65,7 +65,7 @@ export const eventRentalsEntertainment = {
   status: "live",
   verified: true,
   source: companyProfile(17, 18, 19, 20),
-  heroImage: eventPhotos.desertCamp,
+  heroImage: workPhotos.mediaCentreTent,
   page: {
     status: "live",
     verified: true,

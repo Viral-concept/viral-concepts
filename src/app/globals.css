@@ -48,6 +48,8 @@
   --color-yellow-hover: color-mix(in oklab, var(--color-yellow-400) 88%, var(--color-ink));
   /* Error state for forms; contrast 6.4:1 on white. */
   --color-danger: #b42318;
+  /* WhatsApp brand green — the floating chat button only. */
+  --color-whatsapp: #25d366;
 
   /* ----------------------------------------------------- Type (fluid scale) */
   /*
@@ -844,50 +846,6 @@ html:has(dialog[data-mobile-nav][open]) {
   overflow: hidden;
 }
 
-/* Footer wordmark: outlined brand name that fills with brand light as the page ends. */
-@keyframes vc-wordmark-fill {
-  from {
-    background-position: 0% 0%;
-  }
-  to {
-    background-position: 0% 100%;
-  }
-}
-.footer-wordmark {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-stretch: 72%;
-  text-transform: uppercase;
-  font-size: clamp(3.5rem, 1rem + 13.2vw, 15rem);
-  line-height: 0.9;
-  padding-bottom: 0.04em;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
-  color: transparent;
-  -webkit-text-stroke: 1px color-mix(in oklab, white 22%, transparent);
-  background-image: linear-gradient(
-    to top,
-    var(--color-yellow-400) 0%,
-    var(--color-cyan-400) 45%,
-    transparent 46%,
-    transparent 100%
-  );
-  background-size: 100% 220%;
-  background-position: 0% 100%;
-  background-clip: text;
-  -webkit-background-clip: text;
-  opacity: 0.9;
-}
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .footer-wordmark {
-      animation: vc-wordmark-fill linear both;
-      animation-timeline: view();
-      animation-range: entry 20% cover 60%;
-    }
-  }
-}
-
 /*
  * Ambient loops (glows, beams, tickers, cue lights) pause while off screen, so a long page
  * never runs animations nobody can see. RevealController toggles `data-paused`.
@@ -1179,7 +1137,7 @@ html:has(dialog[data-mobile-nav][open]) {
   }
 }
 
-/* Outlined display type (marquees, the footer wordmark, big numerals). */
+/* Outlined display type (marquees, big numerals). */
 @utility text-outline {
   color: transparent;
   -webkit-text-stroke: 1px currentColor;
@@ -1393,5 +1351,33 @@ html:has(dialog[data-mobile-nav][open]) {
   ul:has(> .door:hover) > .door:hover,
   ul:has(> .door:focus-within) > .door:focus-within {
     flex-grow: 1.5;
+  }
+}
+
+/* Floating WhatsApp button: bottom-right on every page, lifted above the phone action bar. */
+@utility whatsapp-float {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: calc(4.5rem + env(safe-area-inset-bottom) + 0.875rem);
+  z-index: 35;
+  @media (min-width: 48rem) {
+    right: 1.5rem;
+    bottom: 1.5rem;
+  }
+}
+@keyframes vc-wa-pulse {
+  0% {
+    opacity: 0.55;
+    scale: 1;
+  }
+  70%,
+  100% {
+    opacity: 0;
+    scale: 1.55;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .whatsapp-pulse {
+    animation: vc-wa-pulse 2.6s var(--ease-brand) 3;
   }
 }

@@ -6,6 +6,7 @@ import { faqs } from "@/content/faqs";
 import { industries } from "@/content/industries";
 import { type PageKey, pages } from "@/content/pages";
 import { pillars } from "@/content/pillars";
+import { serviceScenes } from "@/content/service-scenes";
 import { projects } from "@/content/projects";
 import { services } from "@/content/services";
 import { site } from "@/content/site";
@@ -313,4 +314,26 @@ export function getCoverImage(images: readonly ImageAsset[]): ImageAsset | undef
 /** Hero tagline: the proposed line only where visible, otherwise the confirmed logo tagline. */
 export function getHeroTagline(): Fact<string> {
   return visibleFact(site.heroTagline) ?? site.logoTagline;
+}
+
+/**
+ * Service photography. The card/hero photo is the service's hero image, or its first scene when
+ * it has none. The gallery is the client's own photos of delivered work beyond the three shown
+ * beside the page story — stock photos never appear in it.
+ */
+export function getServiceScenes(service: Service): ImageAsset[] {
+  return (serviceScenes[service.slug] ?? []).flatMap((image) => {
+    const visible = getVisibleImage(image);
+    return visible ? [visible] : [];
+  });
+}
+
+export function getServiceCardImage(service: Service): ImageAsset | undefined {
+  return getVisibleImage(service.heroImage) ?? getServiceScenes(service)[0];
+}
+
+export function getServiceGallery(service: Service): ImageAsset[] {
+  return getServiceScenes(service)
+    .slice(3)
+    .filter((image) => image.kind === "project-photo");
 }

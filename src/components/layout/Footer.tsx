@@ -165,14 +165,6 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Closing wordmark: outlined, it fills with brand light as the page ends. */}
-      <div
-        aria-hidden="true"
-        className="mx-auto w-full max-w-content overflow-hidden px-4 pb-4 select-none sm:px-6 lg:px-8"
-      >
-        <p className="footer-wordmark">{site.name}</p>
-      </div>
-
       <div className="border-t border-white/15">
         <Container className="flex flex-col gap-3 py-6 text-sm text-white/70 sm:flex-row sm:items-center sm:justify-between">
           <p>

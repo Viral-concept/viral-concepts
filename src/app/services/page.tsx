@@ -16,7 +16,9 @@ import { HIGHLIGHTED_PROCESS_STEP } from "@/content/process";
 import { servicesLanding } from "@/content/services-landing";
 import { getSecondaryContactAction } from "@/lib/contact-actions";
 import {
+  getPillarsWithServices,
   getService,
+  getServiceCardImage,
   getServiceHref,
   getServices,
   getVisible,
@@ -43,6 +45,7 @@ function present<T>(value: T | undefined): value is T {
  */
 export default function ServicesPage() {
   const services = getServices("services");
+  const pillars = getPillarsWithServices();
   const secondary = getSecondaryContactAction();
   const { runOfShow, productionHouse } = homeContent;
 
@@ -86,24 +89,85 @@ export default function ServicesPage() {
           { label: "Home", href: routes.home },
           { label: "Services", href: routes.services },
         ]}
-        eyebrow="Events & exhibitions"
+        eyebrow="Our services"
         title={servicesLanding.title}
         lead={servicesLanding.lead}
         image={eventPhotos.concertAerial}
-        credits={services.map((service) => service.title)}
+        credits={pillars.map((pillar) => `${pillar.title} · ${pillar.services.length}`)}
         actions={
           <>
             <ButtonLink href={PRIMARY_CTA.href} size="lg" icon="arrow-right">
               {PRIMARY_CTA.label}
             </ButtonLink>
-            <ButtonLink href="#experiences" size="lg" variant="inverse">
-              What we create
+            <ButtonLink href="#all-services" size="lg" variant="inverse">
+              View all services
             </ButtonLink>
           </>
         }
       />
       <PageBlocks
         blocks={[
+          {
+            key: "all-services",
+            fixedTone: "surface",
+            render: (tone: SectionTone) => (
+              <Section tone={tone} labelledBy="all-services-title" id="all-services">
+                <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+                  <SectionHeader
+                    id="all-services-title"
+                    eyebrow="All services"
+                    title={`${services.length} services, *one team.*`}
+                    intro="From the stage to the last printed flag — every part of your event comes from the same house."
+                    className="reveal"
+                  />
+                  <nav aria-label="Service groups" className="reveal">
+                    <ul className="flex flex-wrap gap-2">
+                      {pillars.map((pillar) => (
+                        <li key={pillar.id}>
+                          <a
+                            href={`#${pillar.id}`}
+                            className="inline-flex min-h-11 items-center rounded-full border border-line-strong bg-white px-4 text-sm font-semibold text-ink transition-colors hover:border-teal-800 hover:bg-tint"
+                          >
+                            {pillar.title}
+                            <span className="ml-2 text-muted">{pillar.services.length}</span>
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </nav>
+                </div>
+                <div className="mt-14 flex flex-col gap-16">
+                  {pillars.map((pillar) => (
+                    <section
+                      key={pillar.id}
+                      id={pillar.id}
+                      aria-labelledby={`${pillar.id}-title`}
+                      className="scroll-mt-28"
+                    >
+                      <div className="mb-8 flex flex-col gap-2 border-t border-line-strong pt-8 md:flex-row md:items-baseline md:justify-between md:gap-10">
+                        <h3 id={`${pillar.id}-title`} className="text-h2 text-ink">
+                          {pillar.title}
+                        </h3>
+                        <p className="max-w-xl text-muted">{pillar.summary}</p>
+                      </div>
+                      <ul className="grid gap-6 reveal-stagger md:grid-cols-2 lg:grid-cols-3">
+                        {pillar.services.map((service) => (
+                          <li key={service.slug} className="reveal">
+                            <ServiceCard
+                              service={service}
+                              highlights={3}
+                              headingLevel={4}
+                              image={getServiceCardImage(service)}
+                            />
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+              </Section>
+            ),
+          },
           items.length > 0 && {
             key: "experiences",
             fixedTone: "night",
@@ -119,32 +183,6 @@ export default function ServicesPage() {
                   className="mb-14 reveal"
                 />
                 <ExperienceIndex items={items} />
-              </Section>
-            ),
-          },
-          services.length > 0 && {
-            key: "service-lines",
-            fixedTone: "surface",
-            render: (tone: SectionTone) => (
-              <Section tone={tone} labelledBy="service-lines-title">
-                <SectionHeader
-                  id="service-lines-title"
-                  eyebrow="Our service lines"
-                  title="Six service lines, *one team.*"
-                  intro="From the stage to the last printed flag — every part of your event comes from the same house."
-                  className="reveal"
-                />
-                <ul className="mt-12 grid gap-6 reveal-stagger md:grid-cols-2 lg:grid-cols-3">
-                  {services.map((service) => (
-                    <li key={service.slug} className="reveal">
-                      <ServiceCard
-                        service={service}
-                        highlights={3}
-                        image={getVisibleImage(service.heroImage)}
-                      />
-                    </li>
-                  ))}
-                </ul>
               </Section>
             ),
           },

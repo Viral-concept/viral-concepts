@@ -181,7 +181,11 @@ export function HeroScenes({ scenes, children, interval = 6500 }: HeroScenesProp
             <Icon name={userPaused ? "play" : "pause"} className="size-4" />
           </button>
 
-          <ol className="hidden flex-1 grid-cols-5 gap-4 md:grid" aria-label="Scenes">
+          <ol
+            className="hidden flex-1 gap-4 md:grid"
+            style={{ gridTemplateColumns: `repeat(${count}, minmax(0, 1fr))` }}
+            aria-label="Scenes"
+          >
             {scenes.map((scene, index) => (
               <li key={scene.id}>
                 <button

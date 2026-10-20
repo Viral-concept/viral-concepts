@@ -1,11 +1,11 @@
 /** Copy for /services. Restates CP p.3, p.6 and p.35. */
 export const servicesLanding = {
   title: "Everything your event needs, *under one roof.*",
-  lead: "Six service lines — from event production, rentals and exhibitions to printing, signage and activations — delivered from our Dubai production house across the UAE, KSA and Qatar.",
+  lead: "Event production, exhibitions and décor; furniture, tents, fences and barriers to rent; and flags, fabric, print, signage and gifts — delivered from our Dubai production house across the UAE, KSA and Qatar.",
   seo: {
-    title: "Event, Branding & Advertising Services in Dubai",
+    title: "Event, Rental & Printing Services in Dubai",
     description:
-      "Six service lines under one roof: branding & printing, advertising & PR, event production, rentals, festive décor and exhibitions.",
+      "Event production, exhibitions, décor, furniture, tent, fence and barrier rental, flags, fabric and large format printing, signage and gifts.",
   },
   cta: {
     title: "Not sure which service you need?",

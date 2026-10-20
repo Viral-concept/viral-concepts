@@ -1,6 +1,6 @@
 import type { Service } from "@/types/content";
 
-import { eventPhotos } from "../event-photos";
+import { workPhotos } from "../work-photos";
 import { companyProfile } from "../sources";
 
 /** Page copy restates CP p.7, 8, 9, 10, 11, 12, 13, 14, 15. Hero photo: licensed stock that sets the scene (content/event-photos.ts). */
@@ -86,7 +86,7 @@ export const brandingPrinting = {
       items: ["Promotional gifts & giveaways"],
     },
   ],
-  relatedServiceSlugs: ["advertising-pr", "exhibitions", "event-production-fabrication"],
+  relatedServiceSlugs: ["flags", "fabric-printing", "print-solutions"],
   seo: {
     title: "Printing & Branding in Dubai — Large Format, Fabric, Signage",
     description:
@@ -102,7 +102,7 @@ export const brandingPrinting = {
   status: "live",
   verified: true,
   source: companyProfile(5, 7, 8, 9, 10, 11, 12, 13, 14, 15, 33),
-  heroImage: eventPhotos.fabricPrinter,
+  heroImage: workPhotos.flagsSunset,
   page: {
     status: "live",
     verified: true,

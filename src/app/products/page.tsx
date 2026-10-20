@@ -10,7 +10,7 @@ import { SectionHeader } from "@/components/ui/SectionHeader";
 import { aboutContent } from "@/content/about";
 import { eventPhotos } from "@/content/event-photos";
 import { homeContent } from "@/content/home";
-import { productCategories, productOptionValue, productsLanding } from "@/content/products";
+import { productCategories, productsLanding } from "@/content/products";
 import { getSecondaryContactAction } from "@/lib/contact-actions";
 import {
   getContactChannels,
@@ -137,7 +137,7 @@ export default function ProductsPage() {
                   label: "What do you need?",
                   options: categories.map((category) => ({
                     label: category.title,
-                    href: contactRouteForService(productOptionValue(category.id)),
+                    href: contactRouteForService(category.serviceSlug),
                   })),
                 }}
                 {...(secondary ? { secondary } : {})}

@@ -7,7 +7,7 @@ import { companyProfile } from "../sources";
 export const advertisingPr = {
   slug: "advertising-pr",
   vertical: "services",
-  pillar: "branding-advertising",
+  pillar: "events-experiences",
   title: "Advertising & PR",
   summary:
     "Concepts, mall activations, promotions, staffing, logistics and outdoor media, managed end to end.",

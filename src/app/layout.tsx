@@ -7,6 +7,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Header } from "@/components/layout/Header";
 import { MobileActionBar } from "@/components/layout/MobileActionBar";
 import { PreviewBanner } from "@/components/layout/PreviewBanner";
+import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { RevealController } from "@/components/motion/RevealController";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { brandColors } from "@/config/brand";
@@ -103,6 +104,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <Footer />
         <MobileActionBar />
+        <WhatsAppButton />
         <RevealController />
         <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
         {/* Cookieless; its script only exists on Vercel deployments. */}

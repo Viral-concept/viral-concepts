@@ -43,6 +43,25 @@ What we deliberately did not copy:
 | Approved web-size Company Profile PDF                                         | `src/content/company-profile.ts`                    |
 | Arabic version (expected by government buyers)                                | future phase                                        |
 
+## Client feedback update (20 October 2026)
+
+- Footer: the large closing "Viral Concepts" wordmark has been removed. The logo, columns, contact details and copyright line are unchanged.
+- Services: there are now 16 service pages, all generated from `src/content/services/*` by one template (`/services/[slug]`). `/services` lists them in three groups.
+- Client photos: optimised client photos live in `public/images/work/` and are registered in `src/content/work-photos.ts`.
+- Homepage hero: the slides run in this order: branded police barriers → flags → tents.
+- WhatsApp: a floating button appears on every page. The number is set in `src/content/site.ts` (`whatsapp`), which currently uses the main CP number.
+
+Still needed from the client:
+
+| Need                                                                                  | Where it goes                           |
+| ------------------------------------------------------------------------------------- | --------------------------------------- |
+| Confirm the WhatsApp number (+971 58 854 7620, or 058 664 1020?) is WhatsApp Business | `src/content/site.ts`                   |
+| Mojo barrier photos, and confirmed wording for the Mojo page                          | `work-photos.ts`, `services/rentals.ts` |
+| Print solutions photos (banners, roll-ups, stickers, vehicle wraps)                   | `work-photos.ts`, `service-scenes.ts`   |
+| Higher-resolution corporate gift photos (the current ones are 640px)                  | `work-photos.ts`                        |
+| Photos for event production, exhibitions and advertising/PR (still stock)             | `service-scenes.ts`                     |
+| Whether the copyright line should keep the company name                               | `src/components/layout/Footer.tsx`      |
+
 ## Stock photography
 
 The photos are licensed Pexels stock. Every one is listed with its Pexels page in `src/content/event-photos.ts`; please review them visually before launch. They set the scene for each service and are never captioned as the company's own work.

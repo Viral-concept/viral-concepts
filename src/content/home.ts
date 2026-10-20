@@ -1,6 +1,7 @@
 import type { Governed, ImageAsset } from "@/types/content";
 
 import { eventPhotos } from "./event-photos";
+import { workPhotos } from "./work-photos";
 import { companyProfile, ownerApproved } from "./sources";
 
 /**
@@ -55,12 +56,18 @@ export const homeContent = {
     /** CP p.3, p.5–6 (service lines), p.16 (production house), p.35 (reach). */
     lead: "Corporate events, conferences, exhibitions and festive décor — and the flags, banners, signage and print that brand them. Designed, printed and built in our own Dubai production house, delivered across the UAE, KSA and Qatar.",
     /** The scenes the hero cycles through, one per kind of event. Photos: licensed stock. */
+    /**
+     * The three hero slides, in the order the client asked for: branded police barriers, flags,
+     * tents. All three are the client's own photos (content/work-photos.ts).
+     */
     scenes: [
-      { id: "live", label: "Live shows & celebrations", image: eventPhotos.stageConfetti },
-      { id: "conferences", label: "Conferences & forums", image: eventPhotos.conferenceAuditorium },
-      { id: "corporate", label: "Corporate & gala nights", image: eventPhotos.banquetStage },
-      { id: "exhibitions", label: "Exhibitions & stands", image: eventPhotos.exhibitionAerial },
-      { id: "branding", label: "Flags, signage & print", image: eventPhotos.flagsSky },
+      {
+        id: "barriers",
+        label: "Branded police barriers",
+        image: workPhotos.brandedBarriersMarathon,
+      },
+      { id: "flags", label: "Flags", image: workPhotos.streetFlags },
+      { id: "tents", label: "Tents", image: workPhotos.tentDusk },
     ] satisfies readonly HeroScene[],
     /** CP p.3, p.16, p.35. */
     credits: ["In-house design, print & fabrication", "UAE · KSA · Qatar"],

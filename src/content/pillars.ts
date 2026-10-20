@@ -1,20 +1,26 @@
 import type { Pillar } from "@/types/content";
 
 /**
- * Homepage grouping of the service lines (Discovery doc, section C). Pillars are a
- * presentation layer only — URLs stay flat under /services.
+ * How services are grouped on the Services page and in the menus. Pillars are a presentation
+ * layer only — every service URL stays flat under /services.
  */
 export const pillars = [
   {
     id: "events-experiences",
-    title: "Events & Experiences",
+    title: "Events & Production",
     summary:
-      "Event production, rentals, exhibitions, festive décor and event staffing, delivered by one team.",
+      "Event production and fabrication, exhibitions, festive décor and brand activations, delivered by one team.",
+  },
+  {
+    id: "event-rentals",
+    title: "Event Rentals",
+    summary:
+      "Furniture, tents, fencing, barriers, AV, entertainment and staff — supplied, set up and collected.",
   },
   {
     id: "branding-advertising",
-    title: "Branding & Advertising",
+    title: "Branding & Print",
     summary:
-      "Large format and fabric printing, signage, flags, vehicle branding, gifts, activations and outdoor media.",
+      "Flags, fabric and large format printing, signage, vehicle branding and corporate gifts from our own print house.",
   },
 ] as const satisfies readonly Pillar[];

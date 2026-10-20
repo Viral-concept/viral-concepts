@@ -1,6 +1,6 @@
 import type { Faq } from "@/types/content";
 
-import { companyProfile } from "./sources";
+import { companyProfile, ownerApproved } from "./sources";
 
 /**
  * FAQs restate Company Profile facts only. Operational policies (lead times, minimum orders,
@@ -147,5 +147,206 @@ export const faqs = [
     status: "live",
     verified: true,
     source: companyProfile(9),
+  },
+  /* Dedicated rental and branding & print pages (client feedback, October 2026). */
+  {
+    id: "furniture-what",
+    question: "What furniture can I rent?",
+    answer:
+      "Banquet and round tables, event chairs, lounge sofas, armchairs and cubes, bean bags, theatre-style seating, and kids area furniture, fences and game booths.",
+    placements: ["service:furniture-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(19, 20),
+  },
+  {
+    id: "furniture-with-tents",
+    question: "Can furniture be rented together with tents and other equipment?",
+    answer:
+      "Yes. Furniture is part of our event rental range, alongside tents and Arabic tents, canopies, stages, barriers, coolers and heaters and portable ablutions, so one team plans and supplies everything.",
+    placements: ["service:furniture-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(19, 20),
+  },
+  {
+    id: "tent-types",
+    question: "What types of tent do you rent?",
+    answer:
+      "Peak and pagoda tents, marquees, tents and Arabic tents, canopies and branded pop-up gazebos for media centres, registration, VIP areas, dinners and community events.",
+    placements: ["service:tent-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(19, 20),
+  },
+  {
+    id: "tent-branding",
+    question: "Can our tents carry our branding?",
+    answer:
+      "Yes. Tent fascias, walls and gazebos can be printed in our own large format and fabric printing facility.",
+    placements: ["service:tent-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(7, 8, 19),
+  },
+  {
+    id: "heras-what",
+    question: "What is Heras fencing used for at events?",
+    answer:
+      "Temporary Heras fence panels secure event perimeters, screen back-of-house areas, create kids zones and form site or mall hoardings.",
+    placements: ["service:heras-fence-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(8, 19, 20),
+  },
+  {
+    id: "heras-wraps",
+    question: "Can you print and install fence wraps?",
+    answer:
+      "Yes. Fence branding is one of our fabric solutions: we print the wraps in-house and install them on the fencing.",
+    placements: ["service:heras-fence-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(8),
+  },
+  {
+    id: "barrier-uses",
+    question: "Where are police barriers used?",
+    answer:
+      "Along race routes and start and finish areas, at entrances and queues, and around VIP and media zones at sports events, festivals and venues.",
+    placements: ["service:police-barrier-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(19, 30),
+  },
+  {
+    id: "barrier-covers",
+    question: "Do you supply branded barrier covers?",
+    answer:
+      "Yes. Barrier cover branding is printed on fabric in our Dubai production house and fitted to the barriers on site.",
+    placements: ["service:police-barrier-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(8, 30),
+  },
+  {
+    id: "mojo-what",
+    question: "What is a mojo barrier?",
+    answer:
+      "A heavy-duty front-of-stage barrier used at concerts and festivals to hold the crowd line and keep a working pit in front of the stage.",
+    placements: ["service:mojo-barrier-rental"],
+    status: "live",
+    verified: true,
+    source: ownerApproved("2026-10-20", "Requested by the client; wording to be confirmed"),
+  },
+  {
+    id: "mojo-with-stage",
+    question: "Can mojo barriers be supplied with the stage and AV?",
+    answer:
+      "Yes. We plan barrier lines together with stage design, trussing, audio visual setup and event support staff.",
+    placements: ["service:mojo-barrier-rental"],
+    status: "live",
+    verified: true,
+    source: companyProfile(17, 18),
+  },
+  {
+    id: "flag-types",
+    question: "Which flag types do you print?",
+    answer:
+      "L-shape, blade, teardrop, wall-mounted, curve top, hoisting, sail and festive flags, supplied with flag poles.",
+    placements: ["service:flags"],
+    status: "live",
+    verified: true,
+    source: companyProfile(11),
+  },
+  {
+    id: "flags-events",
+    question: "Do you print flags for events and festive seasons?",
+    answer:
+      "Yes — event flags for routes, forecourts and venues, and festive flags for occasions such as National Day.",
+    placements: ["service:flags"],
+    status: "live",
+    verified: true,
+    source: companyProfile(11, 21),
+  },
+  {
+    id: "fabric-what",
+    question: "What can you print on fabric?",
+    answer:
+      "Barrier covers, fence branding, fabric backdrops and pop-ups, advertising tents, canvas, flags, and t-shirts, uniforms and caps.",
+    placements: ["service:fabric-printing"],
+    status: "live",
+    verified: true,
+    source: companyProfile(7, 8),
+  },
+  {
+    id: "fabric-apparel",
+    question: "Which apparel printing methods do you offer?",
+    answer:
+      "Heat transfer and sublimation printing, screen printing, DTF and DTG printing, and embroidery.",
+    placements: ["service:fabric-printing"],
+    status: "live",
+    verified: true,
+    source: companyProfile(7),
+  },
+  {
+    id: "print-range",
+    question: "What do your print solutions cover?",
+    answer:
+      "Large format printing, banners and roll-ups, backdrops and displays, wall and floor graphics, hoardings and unipoles, forex, foam and acrylic boards, vehicle branding, and business print such as cards, brochures and catalogues.",
+    placements: ["service:print-solutions"],
+    status: "live",
+    verified: true,
+    source: companyProfile(5, 7, 9, 12, 13, 14),
+  },
+  {
+    id: "print-sizes",
+    question: "Do you take small print jobs as well as large ones?",
+    answer:
+      "Yes. We run projects of all sizes, from ID badges and stickers to large format billboards and complete event branding.",
+    placements: ["service:print-solutions"],
+    status: "live",
+    verified: true,
+    source: companyProfile(7),
+  },
+  {
+    id: "signage-types",
+    question: "Which types of signage do you make?",
+    answer:
+      "3D signage, acrylic signage, backlit signage, directional signage and signboards, plus illuminated light boxes for events.",
+    placements: ["service:signage"],
+    status: "live",
+    verified: true,
+    source: companyProfile(5, 15),
+  },
+  {
+    id: "signage-install",
+    question: "Do you install the signage?",
+    answer:
+      "Yes. Signs are printed and fabricated in our own production house and installed on site by our team.",
+    placements: ["service:signage"],
+    status: "live",
+    verified: true,
+    source: companyProfile(15, 16),
+  },
+  {
+    id: "gifts-what",
+    question: "What corporate gifts do you supply?",
+    answer:
+      "Branded gift sets, notebooks and organisers, pens, flasks and drinkware in presentation boxes, and giveaways for events and campaigns.",
+    placements: ["service:corporate-gifts"],
+    status: "live",
+    verified: true,
+    source: companyProfile(7, 10),
+  },
+  {
+    id: "gifts-logo",
+    question: "Can you print our logo on gifts?",
+    answer:
+      "Yes — if you need a logo printed on a product, we can do it as part of your gifts or giveaways.",
+    placements: ["service:corporate-gifts"],
+    status: "live",
+    verified: true,
+    source: companyProfile(7, 10),
   },
 ] as const satisfies readonly Faq[];

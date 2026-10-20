@@ -41,7 +41,9 @@ describe("navigation in production", () => {
       "/services",
       "/services/branding-printing",
       "/products",
-      "/products#flags",
+      "/services/furniture-rental",
+      "/services/mojo-barrier-rental",
+      "/services/flags",
     ]) {
       expect(hrefs, page).toContain(page);
     }
@@ -63,7 +65,7 @@ describe("navigation in production", () => {
   it("leads with the events menu, then branding & print", async () => {
     const model = await navigationFor("production");
     expect(model.primary.slice(0, 2).map((item) => item.label)).toEqual([
-      "Events",
+      "Events & Rentals",
       "Branding & Print",
     ]);
   });

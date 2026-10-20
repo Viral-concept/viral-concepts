@@ -6,7 +6,6 @@ import {
   getVisible,
   getServiceHref,
   hasServicePage,
-  getServices,
   hasIndustriesPage,
   hasProjectsPage,
   isPageVisible,
@@ -59,11 +58,11 @@ function asNavItem(link: NavLink): NavItem {
 }
 
 export function getNavigation(): NavigationModel {
-  const services = getServices("services");
   const optional = optionalPageLinks();
-  const print = services.find((service) => service.slug === "branding-printing");
-  const eventServices = services.filter((service) => service.slug !== "branding-printing");
-  const eventPillar = getPillarsWithServices().find((pillar) => pillar.id === "events-experiences");
+  const pillars = getPillarsWithServices();
+  const eventPillars = pillars.filter((pillar) => pillar.id !== "branding-advertising");
+  const printPillar = pillars.find((pillar) => pillar.id === "branding-advertising");
+  const eventServices = eventPillars.flatMap((pillar) => pillar.services);
   const products = getVisible(productCategories);
   const company = [
     optional.about,
@@ -73,33 +72,25 @@ export function getNavigation(): NavigationModel {
     CONTACT,
   ].filter(present);
 
-  // Two ways into the business: plan an event, or order branding & print.
+  // Two ways into the business: plan an event (production and rentals), or order branding & print.
   const eventsMenu: NavItem = {
     kind: "menu",
     id: "services",
-    label: "Events",
+    label: "Events & Rentals",
     layout: "mega",
     overview: {
-      label: "Events & exhibitions",
+      label: "All services",
       href: routes.services,
       description:
-        "Corporate events, conferences, exhibitions, activations and décor — produced in our own Dubai production house.",
+        "Event production, exhibitions and décor, and furniture, tents, fences and barriers to rent.",
     },
-    sections: [
-      {
-        title: eventPillar?.title ?? "Events & Experiences",
-        links: (eventPillar?.services ?? []).map((service) => serviceLink(service, true)),
-      },
-      {
-        title: "Activations",
-        links: eventServices
-          .filter((service) => !eventPillar?.services.some((s) => s.slug === service.slug))
-          .map((service) => serviceLink(service, true)),
-      },
-    ].filter((section) => section.links.length > 0),
+    sections: eventPillars.map((pillar) => ({
+      title: pillar.title,
+      links: pillar.services.map((service) => serviceLink(service, false)),
+    })),
   };
 
-  const printMenu: NavItem | undefined = print
+  const printMenu: NavItem | undefined = printPillar
     ? {
         kind: "menu",
         id: "branding-print",
@@ -107,20 +98,13 @@ export function getNavigation(): NavigationModel {
         layout: "mega",
         cta: { label: "Request a quote", href: contactRouteForService("branding-printing") },
         overview: {
-          label: "All branding & print",
+          label: "All products",
           href: routes.products,
           description:
             "Flags, banners, signage, large format, fabric, vehicle branding, print and gifts — made in-house.",
         },
         sections: [
-          {
-            title: "Products",
-            links: products.map((category) => ({
-              label: category.title,
-              href: `${routes.products}#${category.id}`,
-            })),
-          },
-          { title: "Service", links: [serviceLink(print, true)] },
+          { title: "Services", links: printPillar.services.map((s) => serviceLink(s, false)) },
         ],
       }
     : undefined;
@@ -137,17 +121,14 @@ export function getNavigation(): NavigationModel {
   ].filter(present);
 
   const footerColumns: FooterColumn[] = [
-    { title: "Events", links: eventServices.map((s) => serviceLink(s, false)) },
-    ...(print
+    { title: "Events & Rentals", links: eventServices.map((s) => serviceLink(s, false)) },
+    ...(printPillar
       ? [
           {
             title: "Branding & Print",
             links: [
-              { label: "All products", href: routes.products },
-              ...products.map((category) => ({
-                label: category.title,
-                href: `${routes.products}#${category.id}`,
-              })),
+              ...printPillar.services.map((s) => serviceLink(s, false)),
+              ...(products.length > 0 ? [{ label: "All products", href: routes.products }] : []),
             ],
           },
         ]

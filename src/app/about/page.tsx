@@ -18,6 +18,7 @@ import { eventPhotos } from "@/content/event-photos";
 import { homeContent } from "@/content/home";
 import { getSecondaryContactAction } from "@/lib/contact-actions";
 import {
+  getServiceCardImage,
   getVisibleImage,
   getIndustries,
   getServices,
@@ -148,7 +149,7 @@ export default function AboutPage() {
                 <SectionHeader
                   id="service-lines-title"
                   eyebrow="Our service lines"
-                  title="Six service lines, *one team.*"
+                  title="Every service, *one team.*"
                 />
                 <ul className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                   {serviceLines.map((service) => (
@@ -156,7 +157,7 @@ export default function AboutPage() {
                       <ServiceCard
                         service={service}
                         highlights={0}
-                        image={getVisibleImage(service.heroImage)}
+                        image={getServiceCardImage(service)}
                       />
                     </li>
                   ))}

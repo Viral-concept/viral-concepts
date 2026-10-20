@@ -141,3 +141,52 @@ export function EventOfferings({ tone, serviceTitle, groups }: EventOfferingsPro
     </Section>
   );
 }
+
+/* -------------------------------------------------------------------------- */
+/* In the field: the client's own photos of this service                       */
+/* -------------------------------------------------------------------------- */
+
+interface ServiceGalleryProps {
+  readonly tone: SectionTone;
+  readonly serviceTitle: string;
+  readonly images: readonly ImageAsset[];
+}
+
+export function ServiceGallery({ tone, serviceTitle, images }: ServiceGalleryProps) {
+  return (
+    <Section tone={tone} labelledBy="gallery-title">
+      <SectionHeader
+        id="gallery-title"
+        eyebrow="In the field"
+        title={`${serviceTitle} — *our work*`}
+        intro="Photographs from jobs our team has produced and installed."
+        className="mb-12 reveal"
+      />
+      <ul className="grid grid-cols-2 gap-3 reveal-stagger sm:gap-4 lg:grid-cols-4">
+        {images.map((image, index) => (
+          <li
+            key={image.src}
+            className={cx(
+              "group relative overflow-hidden rounded-card bg-night-soft reveal",
+              index % 5 === 0
+                ? "col-span-2 aspect-[16/10] lg:row-span-2 lg:aspect-auto"
+                : "aspect-square",
+            )}
+          >
+            <Image
+              src={image.src}
+              alt={image.alt}
+              fill
+              sizes={
+                index % 5 === 0
+                  ? "(min-width: 1024px) 50vw, 100vw"
+                  : "(min-width: 1024px) 25vw, 50vw"
+              }
+              className="object-cover transition-[scale] duration-[1400ms] ease-(--ease-brand) group-hover:scale-105"
+            />
+          </li>
+        ))}
+      </ul>
+    </Section>
+  );
+}

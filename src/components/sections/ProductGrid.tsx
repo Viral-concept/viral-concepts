@@ -3,8 +3,8 @@ import Link from "next/link";
 
 import { Icon } from "@/components/ui/Icon";
 import { ReviewFlag } from "@/components/ui/ReviewFlag";
-import { productOptionValue, type ProductCategory } from "@/content/products";
-import { getVisibleImage } from "@/lib/content";
+import type { ProductCategory } from "@/content/products";
+import { getService, getServiceHref, getVisibleImage } from "@/lib/content";
 import { contactRouteForService } from "@/lib/routes";
 
 /**
@@ -28,6 +28,7 @@ export function ProductGrid({ categories, headingLevel = 2, itemLimit }: Product
         const image = getVisibleImage(category.image);
         const items = itemLimit ? category.items.slice(0, itemLimit) : category.items;
         const more = category.items.length - items.length;
+        const service = getService("services", category.serviceSlug);
         return (
           <li
             key={category.id}
@@ -51,7 +52,18 @@ export function ProductGrid({ categories, headingLevel = 2, itemLimit }: Product
             </div>
             <div className="flex flex-1 flex-col gap-4 p-6 sm:p-7">
               <ReviewFlag item={category} className="self-start" />
-              <Heading className="text-h3 text-ink">{category.title}</Heading>
+              <Heading className="text-h3 text-ink">
+                {service ? (
+                  <Link
+                    href={getServiceHref(service)}
+                    className="relative z-10 underline-offset-4 hover:text-teal-800 hover:underline"
+                  >
+                    {category.title}
+                  </Link>
+                ) : (
+                  category.title
+                )}
+              </Heading>
               <p className="text-muted">{category.summary}</p>
               <ul className="flex flex-wrap gap-1.5" aria-label={`${category.title} we produce`}>
                 {items.map((item) => (
@@ -67,7 +79,7 @@ export function ProductGrid({ categories, headingLevel = 2, itemLimit }: Product
                 ) : null}
               </ul>
               <Link
-                href={contactRouteForService(productOptionValue(category.id))}
+                href={contactRouteForService(category.serviceSlug)}
                 className="mt-auto inline-flex min-h-11 items-center gap-2 self-start pt-2 font-semibold text-teal-800 after:absolute after:inset-0 after:content-[''] hover:underline"
               >
                 Get a quote
