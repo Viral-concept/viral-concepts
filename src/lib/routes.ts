@@ -11,6 +11,7 @@ export const routes = {
   about: "/about",
   services: "/services",
   products: "/products",
+  gallery: "/gallery",
   projects: "/projects",
   industries: "/industries",
   companyProfile: "/company-profile",

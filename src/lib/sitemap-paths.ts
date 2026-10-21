@@ -20,6 +20,7 @@ export function getSitemapPaths(): string[] {
     routes.services,
     ...getServicePages("services").map(serviceRoute),
     routes.products,
+    routes.gallery,
     ...(hasProjectsPage()
       ? [routes.projects, ...getProjects().map((project) => projectRoute(project.slug))]
       : []),

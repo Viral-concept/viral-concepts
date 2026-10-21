@@ -24,9 +24,11 @@ export interface GalleryImage {
 interface ProjectGalleryProps {
   readonly images: readonly GalleryImage[];
   readonly title: string;
+  /** Two columns on phones (for pages with many photos, like /gallery). */
+  readonly dense?: boolean;
 }
 
-export function ProjectGallery({ images, title }: ProjectGalleryProps) {
+export function ProjectGallery({ images, title, dense = false }: ProjectGalleryProps) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [index, setIndex] = useState(0);
   const current = images[index];
@@ -43,7 +45,13 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
 
   return (
     <>
-      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <ul
+        className={
+          dense
+            ? "grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3"
+            : "grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
+        }
+      >
         {images.map((image, i) => (
           <li key={image.src} className="relative">
             <button
@@ -57,7 +65,11 @@ export function ProjectGallery({ images, title }: ProjectGalleryProps) {
                 alt={image.alt}
                 width={image.width}
                 height={image.height}
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                sizes={
+                  dense
+                    ? "(min-width: 1024px) 33vw, 50vw"
+                    : "(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                }
                 className="size-full object-cover transition-transform duration-(--duration-slow) ease-(--ease-brand) group-hover:scale-104"
               />
               <span className="absolute right-3 bottom-3 grid size-10 place-items-center rounded-full bg-ink/75 text-white">

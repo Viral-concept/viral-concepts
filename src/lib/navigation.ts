@@ -48,6 +48,7 @@ function optionalPageLinks() {
 }
 
 const CONTACT: NavLink = { label: "Contact", href: routes.contact };
+const GALLERY: NavLink = { label: "Gallery", href: routes.gallery };
 
 function present<T>(value: T | undefined): value is T {
   return value !== undefined;
@@ -66,6 +67,7 @@ export function getNavigation(): NavigationModel {
   const products = getVisible(productCategories);
   const company = [
     optional.about,
+    GALLERY,
     optional.projects,
     optional.industries,
     optional.companyProfile,
@@ -113,6 +115,7 @@ export function getNavigation(): NavigationModel {
   const primary: NavItem[] = [
     eventsMenu,
     printMenu,
+    asNavItem(GALLERY),
     optional.projects && asNavItem(optional.projects),
     optional.about && asNavItem(optional.about),
     optional.industries && asNavItem(optional.industries),

@@ -45,6 +45,7 @@ describe("sitemap", () => {
       "/services/signage",
       "/services/corporate-gifts",
       "/products",
+      "/gallery",
       "/contact",
     ]);
     for (const entry of sitemap) {
